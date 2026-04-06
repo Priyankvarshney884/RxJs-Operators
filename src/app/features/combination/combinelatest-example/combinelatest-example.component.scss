@@ -1,5 +1,5 @@
-@import '../../filtering/filter-example/filter-example.component.scss';
-@import '../forkjoin-example/forkjoin-example.component.scss';
+@use '../../filtering/filter-example/filter-example.component.scss';
+@use '../forkjoin-example/forkjoin-example.component.scss';
 
 .filters-container {
   display: grid;

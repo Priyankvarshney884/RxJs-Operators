@@ -1,0 +1,234 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>✨ from Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is from?</h2>
+    <p class="description">
+      The <code>from</code> operator converts various data sources (arrays, promises, iterables, observables) 
+      into an Observable. It's incredibly versatile and essential for integrating different async patterns 
+      into the RxJS ecosystem.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Convert arrays to Observables</li>
+      <li>✅ Convert Promises to Observables</li>
+      <li>✅ Work with iterables and async iterables</li>
+      <li>✅ Integrate with other async patterns</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Convert different data sources to Observables using the from operator.</p>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label for="sourceType">Source Type:</label>
+        <select id="sourceType" [(ngModel)]="selectedSource" [disabled]="loading()">
+          <option value="array">Array</option>
+          <option value="promise">Promise</option>
+          <option value="string">String (iterable)</option>
+          <option value="set">Set</option>
+        </select>
+      </div>
+      
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Converting...' : '▶️ Convert to Observable' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ loadingMessage() }}</p>
+      </div>
+    }
+
+    @if (sourceInfo()) {
+      <div class="source-panel">
+        <h3>📋 Source Data</h3>
+        <div class="source-content">
+          <strong>Type:</strong> {{ sourceInfo()?.type }}
+          <pre>{{ sourceInfo()?.data | json }}</pre>
+        </div>
+      </div>
+    }
+
+    @if (emissions().length > 0) {
+      <div class="emissions-panel">
+        <h3>📡 Observable Emissions</h3>
+        <div class="emissions-list">
+          @for (emission of emissions(); track emission.index) {
+            <div class="emission-item" [style.animation-delay.ms]="emission.index * 100">
+              <div class="emission-badge">{{ emission.index + 1 }}</div>
+              <div class="emission-content">
+                <span class="emission-time">{{ emission.time }}ms</span>
+                <div class="emission-value">
+                  <pre>{{ emission.value | json }}</pre>
+                </div>
+              </div>
+            </div>
+          }
+          @if (completed()) {
+            <div class="emission-item complete">
+              <div class="emission-badge complete">✓</div>
+              <div class="emission-content">
+                <span class="emission-time">{{ completionTime() }}ms</span>
+                <strong>Completed</strong>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Conversion Complete</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Emissions:</strong> {{ emissions().length }}
+          </span>
+          <span class="stat">
+            <strong>Source:</strong> {{ selectedSource }}
+          </span>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Identify Source</h4>
+          <p>from() detects the type of input (array, promise, etc.)</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Convert to Observable</h4>
+          <p>Creates an Observable that emits values from the source</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Emit Values</h4>
+          <p>Each item is emitted sequentially</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Complete</h4>
+          <p>Observable completes after all values are emitted</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🔄 Promise Integration</h4>
+        <p>Convert fetch/async functions</p>
+        <code>from(fetch('/api/data'))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📋 Array Processing</h4>
+        <p>Process arrays reactively</p>
+        <code>from([1, 2, 3]).pipe(map(x => x * 2))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔀 Async Iteration</h4>
+        <p>Work with async iterables</p>
+        <code>from(asyncGenerator())</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎯 Event Conversion</h4>
+        <p>Convert event-based APIs</p>
+        <code>from(eventEmitter)</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section info">
+    <h2>💡 from vs of</h2>
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h4>from()</h4>
+        <p><strong>Input:</strong> Array, Promise, Iterable</p>
+        <p><strong>Behavior:</strong> Emits each item separately</p>
+        <code>from([1, 2, 3]) // emits: 1, 2, 3</code>
+      </div>
+      <div class="comparison-card">
+        <h4>of()</h4>
+        <p><strong>Input:</strong> Individual values</p>
+        <p><strong>Behavior:</strong> Emits arguments as-is</p>
+        <code>of([1, 2, 3]) // emits: [1, 2, 3]</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use from() for arrays and promises</li>
+      <li>Perfect for converting legacy async code</li>
+      <li>Combine with operators for powerful transformations</li>
+      <li>Handle promise rejections with catchError</li>
+      <li>Great for batch processing</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/creation/of" class="operator-link">
+        <span class="icon">✨</span>
+        <span class="name">of</span>
+        <span class="desc">Create from static values</span>
+      </a>
+      <a routerLink="/creation/interval" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">interval</span>
+        <span class="desc">Emit at intervals</span>
+      </a>
+      <a routerLink="/creation/timer" class="operator-link">
+        <span class="icon">⏰</span>
+        <span class="name">timer</span>
+        <span class="desc">Emit after delay</span>
+      </a>
+    </div>
+  </section>
+</div>

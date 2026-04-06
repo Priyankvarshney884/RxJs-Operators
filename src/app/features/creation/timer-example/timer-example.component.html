@@ -1,0 +1,80 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>⏰ timer Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is timer?</h2>
+    <p class="description">
+      The <code>timer</code> operator creates an Observable that waits for a specified initial delay, 
+      then emits numbers at specified intervals. It's perfect for delayed actions, scheduled tasks, 
+      and countdown timers.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>Initial Delay (ms):</label>
+        <input type="number" [(ngModel)]="initialDelay" [disabled]="loading()" min="0" step="500">
+      </div>
+      <div class="control-group">
+        <label>Interval (ms):</label>
+        <input type="number" [(ngModel)]="intervalPeriod" [disabled]="loading()" min="100" step="100">
+      </div>
+      <div class="control-group">
+        <label>Max Emissions:</label>
+        <input type="number" [(ngModel)]="maxEmissions" [disabled]="loading()" min="1" max="10">
+      </div>
+      <button class="btn btn-primary" (click)="runExample()" [disabled]="loading()">
+        {{ loading() ? '⏳ Running...' : '▶️ Start Timer' }}
+      </button>
+      <button class="btn btn-danger" (click)="stopExample()" [disabled]="!loading()">
+        ⏹️ Stop
+      </button>
+      <button class="btn btn-secondary" (click)="clearResults()">🗑️ Clear</button>
+    </div>
+
+    @if (emissions().length > 0) {
+      <div class="emissions-panel">
+        <h3>📡 Emissions Timeline</h3>
+        <p class="emissions-note">First emission after {{ initialDelay }}ms, then every {{ intervalPeriod }}ms</p>
+        <div class="emissions-list">
+          @for (emission of emissions(); track emission.index) {
+            <div class="emission-item">
+              <div class="emission-badge">{{ emission.value }}</div>
+              <span class="emission-time">{{ emission.time }}ms</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/creation/interval" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">interval</span>
+      </a>
+      <a routerLink="/creation/of" class="operator-link">
+        <span class="icon">✨</span>
+        <span class="name">of</span>
+      </a>
+      <a routerLink="/utility/delay" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">delay</span>
+      </a>
+    </div>
+  </section>
+</div>

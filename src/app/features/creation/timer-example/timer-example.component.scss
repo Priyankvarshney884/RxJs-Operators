@@ -1,0 +1,68 @@
+@use '../../../../styles.scss';
+
+.operator-example {
+  .emissions-panel {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--surface-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--primary-color);
+      font-size: 1.1rem;
+    }
+
+    .emissions-note {
+      margin: 0 0 1rem 0;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .emissions-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .emission-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--background-color);
+      border-radius: 8px;
+      border: 2px solid var(--primary-color);
+      min-width: 80px;
+      animation: slideIn 0.3s ease-out;
+
+      .emission-badge {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      .emission-time {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// Made with Bob
