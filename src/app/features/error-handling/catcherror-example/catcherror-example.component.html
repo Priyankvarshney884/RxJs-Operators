@@ -1,0 +1,205 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🛡️ catchError Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is catchError?</h2>
+    <p class="description">
+      The <code>catchError</code> operator catches errors on the Observable to be handled by returning 
+      a new Observable or throwing an error. It's essential for graceful error handling and recovery 
+      in reactive streams.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Handle API errors gracefully</li>
+      <li>✅ Provide fallback values when errors occur</li>
+      <li>✅ Log errors and continue stream execution</li>
+      <li>✅ Retry with alternative data sources</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Simulate an API error and see how catchError handles it gracefully.</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runSuccessExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '✅ Run Success Case' }}
+      </button>
+      <button 
+        class="btn btn-danger" 
+        (click)="runErrorExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '❌ Trigger Error' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ loadingMessage() }}</p>
+      </div>
+    }
+
+    @if (errorCaught()) {
+      <div class="error-caught-panel">
+        <h3>🛡️ Error Caught & Handled!</h3>
+        <div class="error-details">
+          <div class="error-info">
+            <strong>Original Error:</strong>
+            <p>{{ errorCaught() }}</p>
+          </div>
+          <div class="recovery-info">
+            <strong>Recovery Action:</strong>
+            <p>Returned fallback data instead of crashing</p>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Result</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Execution Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Items:</strong> {{ result()?.length }}
+          </span>
+          @if (isFallbackData()) {
+            <span class="stat fallback-badge">
+              🔄 Fallback Data
+            </span>
+          }
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Observable Executes</h4>
+          <p>The source Observable starts emitting values normally</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Error Occurs</h4>
+          <p>An error is thrown in the Observable chain</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>catchError Intercepts</h4>
+          <p>catchError catches the error and returns a fallback Observable</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Stream Continues</h4>
+          <p>The stream continues with the fallback data instead of terminating</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🔄 Fallback Data</h4>
+        <p>Return cached or default data when API fails</p>
+        <code>catchError(() => of(cachedData))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📝 Error Logging</h4>
+        <p>Log errors and continue with empty result</p>
+        <code>catchError(err => {{ '{' }} logError(err); return of([]); {{ '}' }})</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔀 Alternative Source</h4>
+        <p>Try backup API when primary fails</p>
+        <code>catchError(() => backupApi.getData())</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎯 User-Friendly Messages</h4>
+        <p>Transform technical errors to user messages</p>
+        <code>catchError(err => throwError(() => 'Please try again'))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Must return Observable:</strong> catchError must return an Observable (use of() or throwError())</li>
+      <li><strong>Completes the stream:</strong> After catching, the original Observable completes</li>
+      <li><strong>Position matters:</strong> Place catchError where you want to handle errors in the chain</li>
+      <li><strong>Re-throwing errors:</strong> Use throwError() to propagate errors after logging</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Always provide meaningful fallback values</li>
+      <li>Log errors before handling them</li>
+      <li>Use with retry operators for automatic recovery</li>
+      <li>Consider user experience when choosing fallback strategy</li>
+      <li>Don't swallow errors silently - inform the user</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/error-handling/retry" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">retry</span>
+        <span class="desc">Retry failed Observable</span>
+      </a>
+      <a routerLink="/error-handling/retrywhen" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">retryWhen</span>
+        <span class="desc">Conditional retry logic</span>
+      </a>
+      <a routerLink="/utility/finalize" class="operator-link">
+        <span class="icon">🛠️</span>
+        <span class="name">finalize</span>
+        <span class="desc">Cleanup on complete/error</span>
+      </a>
+    </div>
+  </section>
+</div>

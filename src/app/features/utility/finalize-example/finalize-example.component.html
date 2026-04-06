@@ -1,0 +1,241 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🏁 finalize Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is finalize?</h2>
+    <p class="description">
+      The <code>finalize</code> operator executes a callback function when the Observable completes 
+      or errors, regardless of how it terminates. It's perfect for cleanup operations like hiding 
+      loading indicators, closing connections, or releasing resources.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Hide loading indicators after requests complete</li>
+      <li>✅ Clean up resources (close connections, timers)</li>
+      <li>✅ Log completion or error events</li>
+      <li>✅ Reset component state after operations</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Test finalize with both successful and error scenarios to see it always executes.</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runSuccessExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '✅ Success Scenario' }}
+      </button>
+      <button 
+        class="btn btn-danger" 
+        (click)="runErrorExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '❌ Error Scenario' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ loadingMessage() }}</p>
+        <p class="loading-hint">Watch finalize execute when this completes!</p>
+      </div>
+    }
+
+    @if (cleanupLogs().length > 0) {
+      <div class="cleanup-panel">
+        <h3>🧹 Cleanup Operations Log</h3>
+        <p class="cleanup-description">These cleanup operations were performed by finalize:</p>
+        <div class="cleanup-logs">
+          @for (log of cleanupLogs(); track log.timestamp) {
+            <div class="cleanup-entry" [class]="log.type">
+              <span class="cleanup-icon">{{ log.icon }}</span>
+              <div class="cleanup-content">
+                <span class="cleanup-time">{{ log.timestamp }}ms</span>
+                <span class="cleanup-message">{{ log.message }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error Occurred</h3>
+        <p>{{ error() }}</p>
+        <div class="error-note">
+          <strong>Note:</strong> Even though an error occurred, finalize still executed!
+        </div>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Success!</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Items:</strong> {{ result()?.length }}
+          </span>
+          <span class="stat">
+            <strong>Cleanup Executed:</strong> ✓
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Observable Executes</h4>
+          <p>The source Observable starts emitting values</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Values Flow Through</h4>
+          <p>Values pass through finalize without modification</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Completion or Error</h4>
+          <p>Observable completes successfully or errors out</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Cleanup Executes</h4>
+          <p>finalize callback runs regardless of success or error</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>⏳ Loading States</h4>
+        <p>Always hide loading indicator</p>
+        <code>finalize(() => this.loading.set(false))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔌 Close Connections</h4>
+        <p>Clean up WebSocket or HTTP connections</p>
+        <code>finalize(() => connection.close())</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📊 Analytics</h4>
+        <p>Track operation completion</p>
+        <code>finalize(() => analytics.track('operation_end'))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🧹 Resource Cleanup</h4>
+        <p>Release resources and clear timers</p>
+        <code>finalize(() => clearInterval(timer))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section info">
+    <h2>💡 finalize vs Other Operators</h2>
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h4>🏁 finalize</h4>
+        <p><strong>When:</strong> On complete OR error</p>
+        <p><strong>Use for:</strong> Cleanup operations</p>
+        <code>finalize(() => cleanup())</code>
+      </div>
+      <div class="comparison-card">
+        <h4>🔍 tap</h4>
+        <p><strong>When:</strong> On each emission</p>
+        <p><strong>Use for:</strong> Side effects during stream</p>
+        <code>tap(value => log(value))</code>
+      </div>
+      <div class="comparison-card">
+        <h4>🛡️ catchError</h4>
+        <p><strong>When:</strong> Only on error</p>
+        <p><strong>Use for:</strong> Error handling and recovery</p>
+        <code>catchError(err => of([]))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Always executes:</strong> Runs on both complete and error</li>
+      <li><strong>No return value:</strong> Cannot modify or return values</li>
+      <li><strong>Unsubscribe safe:</strong> Also runs on unsubscribe</li>
+      <li><strong>Order matters:</strong> Place at the end of your pipe for final cleanup</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use for cleanup that must always happen</li>
+      <li>Perfect for hiding loading indicators</li>
+      <li>Place at the end of your operator chain</li>
+      <li>Keep finalize callbacks simple and fast</li>
+      <li>Don't throw errors in finalize callbacks</li>
+      <li>Use for logging completion events</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/utility/tap" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">tap</span>
+        <span class="desc">Side effects on emissions</span>
+      </a>
+      <a routerLink="/error-handling/catcherror" class="operator-link">
+        <span class="icon">🛡️</span>
+        <span class="name">catchError</span>
+        <span class="desc">Handle errors</span>
+      </a>
+      <a routerLink="/utility/delay" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">delay</span>
+        <span class="desc">Delay emissions</span>
+      </a>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,219 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔍 tap Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is tap?</h2>
+    <p class="description">
+      The <code>tap</code> operator (formerly <code>do</code>) allows you to perform side effects 
+      for notifications from the source Observable without modifying the stream. It's perfect for 
+      debugging, logging, and triggering actions without changing the data flow.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Debug and log Observable emissions</li>
+      <li>✅ Update UI state (loading indicators, counters)</li>
+      <li>✅ Trigger analytics or tracking events</li>
+      <li>✅ Cache data without modifying the stream</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Watch tap in action as it logs and tracks data without modifying it.</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '▶️ Run Example' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading users and tracking with tap...</p>
+      </div>
+    }
+
+    @if (tapLogs().length > 0) {
+      <div class="tap-logs-panel">
+        <h3>📋 Tap Side Effects Log</h3>
+        <p class="log-description">These actions were performed by tap without modifying the data:</p>
+        <div class="logs-container">
+          @for (log of tapLogs(); track log.timestamp) {
+            <div class="log-entry" [class]="log.type">
+              <span class="log-icon">{{ log.icon }}</span>
+              <div class="log-content">
+                <span class="log-time">{{ log.timestamp }}ms</span>
+                <span class="log-message">{{ log.message }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error</h3>
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Final Result (Unmodified by tap)</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Items:</strong> {{ result()?.length }}
+          </span>
+          <span class="stat">
+            <strong>Tap Calls:</strong> {{ tapLogs().length }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Value Arrives</h4>
+          <p>A value is emitted from the source Observable</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Side Effect Executes</h4>
+          <p>tap performs its side effect (log, update state, etc.)</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Value Passes Through</h4>
+          <p>The original value continues unchanged to the next operator</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Stream Continues</h4>
+          <p>The Observable chain continues with the unmodified data</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🐛 Debugging</h4>
+        <p>Log values at different pipeline stages</p>
+        <code>tap(value => console.log('Debug:', value))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📊 Analytics</h4>
+        <p>Track user interactions and events</p>
+        <code>tap(event => analytics.track(event))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>💾 Caching</h4>
+        <p>Store data in cache without modifying stream</p>
+        <code>tap(data => cache.set('key', data))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 Loading States</h4>
+        <p>Update loading indicators</p>
+        <code>tap(() => this.loading.set(false))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Common Mistakes</h2>
+    <div class="mistake">
+      <h4>❌ Don't modify the emitted value</h4>
+      <pre><code>// BAD - modifying the value
+tap(user => {{ '{' }}
+  user.name = 'Modified'; // Don't do this!
+  return user;
+{{ '}' }})</code></pre>
+      <pre><code>// GOOD - use map to transform
+map(user => ({{ '{' }} ...user, name: 'Modified' {{ '}' }}))</code></pre>
+    </div>
+    <div class="mistake">
+      <h4>❌ Don't use tap for transformations</h4>
+      <pre><code>// BAD - trying to transform in tap
+tap(value => value * 2) // This doesn't work!
+</code></pre>
+      <pre><code>// GOOD - use map for transformations
+map(value => value * 2)</code></pre>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use tap for side effects only, not transformations</li>
+      <li>Keep tap operations simple and fast</li>
+      <li>Don't modify the emitted values in tap</li>
+      <li>Perfect for debugging during development</li>
+      <li>Use for updating component state (loading, counters)</li>
+      <li>Avoid heavy computations in tap</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/transformation/map" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">map</span>
+        <span class="desc">Transform values</span>
+      </a>
+      <a routerLink="/utility/finalize" class="operator-link">
+        <span class="icon">🏁</span>
+        <span class="name">finalize</span>
+        <span class="desc">Cleanup on complete</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+        <span class="desc">Filter emissions</span>
+      </a>
+    </div>
+  </section>
+</div>
