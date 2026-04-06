@@ -1,0 +1,257 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>⏱️ delay Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is delay?</h2>
+    <p class="description">
+      The <code>delay</code> operator delays the emission of items from the source Observable by a 
+      specified time span. All emissions are delayed by the same amount, maintaining the relative 
+      time intervals between them.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Add artificial delays for testing or demos</li>
+      <li>✅ Implement rate limiting or throttling</li>
+      <li>✅ Create timed animations or transitions</li>
+      <li>✅ Simulate network latency in development</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Select a delay duration and watch the emissions arrive after the specified time.</p>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label for="delayTime">Delay Duration:</label>
+        <select id="delayTime" [(ngModel)]="delayTime" [disabled]="loading()">
+          <option [value]="500">500ms (0.5s)</option>
+          <option [value]="1000">1000ms (1s)</option>
+          <option [value]="2000">2000ms (2s)</option>
+          <option [value]="3000">3000ms (3s)</option>
+        </select>
+      </div>
+      
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Waiting...' : '▶️ Run with Delay' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ loadingMessage() }}</p>
+        <div class="delay-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="delayProgress()"></div>
+          </div>
+          <span class="progress-text">{{ delayProgress() }}% - {{ remainingTime() }}ms remaining</span>
+        </div>
+      </div>
+    }
+
+    @if (timeline().length > 0) {
+      <div class="timeline-panel">
+        <h3>⏰ Emission Timeline</h3>
+        <div class="timeline-visualization">
+          <div class="timeline-track">
+            @for (event of timeline(); track event.id) {
+              <div class="timeline-event" 
+                   [style.left.%]="(event.time / executionTime()) * 100"
+                   [class.emission]="event.type === 'emission'"
+                   [class.complete]="event.type === 'complete'">
+                <div class="event-marker">{{ event.icon }}</div>
+                <div class="event-label">
+                  <span class="event-name">{{ event.label }}</span>
+                  <span class="event-time">{{ event.time }}ms</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="timeline-legend">
+          <span class="legend-item">
+            <span class="legend-marker emission"></span>
+            Data Emission
+          </span>
+          <span class="legend-item">
+            <span class="legend-marker complete"></span>
+            Completion
+          </span>
+        </div>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error</h3>
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Result (Delayed by {{ delayTime }}ms)</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Delay Applied:</strong> {{ delayTime }}ms
+          </span>
+          <span class="stat">
+            <strong>Items:</strong> {{ result()?.length }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Source Emits</h4>
+          <p>The source Observable emits a value</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Delay Timer Starts</h4>
+          <p>A timer is started for the specified delay duration</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Wait Period</h4>
+          <p>The value is held during the delay period</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Delayed Emission</h4>
+          <p>After the delay, the value is emitted to subscribers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🎬 Animations</h4>
+        <p>Delay UI updates for smooth transitions</p>
+        <code>action$.pipe(delay(300))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 Retry Logic</h4>
+        <p>Add delays between retry attempts</p>
+        <code>retry$.pipe(delay(1000))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🧪 Testing</h4>
+        <p>Simulate network latency in tests</p>
+        <code>mockApi$.pipe(delay(500))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>⏰ Scheduled Actions</h4>
+        <p>Delay actions to specific times</p>
+        <code>event$.pipe(delay(new Date('2024-01-01')))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section info">
+    <h2>💡 Delay Variants</h2>
+    <div class="variant-grid">
+      <div class="variant-card">
+        <h4>⏱️ Time-based Delay</h4>
+        <p>Delay by milliseconds</p>
+        <code>delay(1000) // 1 second</code>
+      </div>
+      <div class="variant-card">
+        <h4>📅 Date-based Delay</h4>
+        <p>Delay until specific date/time</p>
+        <code>delay(new Date('2024-12-31'))</code>
+      </div>
+      <div class="variant-card">
+        <h4>🔀 delayWhen</h4>
+        <p>Delay based on another Observable</p>
+        <code>delayWhen(() => timer(1000))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Maintains order:</strong> Emissions maintain their relative timing</li>
+      <li><strong>Delays all emissions:</strong> Every value is delayed by the same amount</li>
+      <li><strong>Async operation:</strong> Uses setTimeout internally</li>
+      <li><strong>Memory consideration:</strong> Long delays hold values in memory</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use reasonable delay durations to avoid poor UX</li>
+      <li>Consider debounceTime for user input delays</li>
+      <li>Combine with retry for exponential backoff</li>
+      <li>Use for testing and development simulations</li>
+      <li>Be mindful of memory with long delays</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/debouncetime" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">debounceTime</span>
+        <span class="desc">Delay and filter emissions</span>
+      </a>
+      <a routerLink="/utility/tap" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">tap</span>
+        <span class="desc">Side effects without delay</span>
+      </a>
+      <a routerLink="/error-handling/retrywhen" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">retryWhen</span>
+        <span class="desc">Retry with delays</span>
+      </a>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,252 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔄⏱️ retryWhen Operator</h1>
+    <span class="difficulty advanced">🔴 Advanced</span>
+  </div>
+
+  <section class="section">
+    <h2>What is retryWhen?</h2>
+    <p class="description">
+      The <code>retryWhen</code> operator provides fine-grained control over retry logic. Unlike 
+      <code>retry</code>, it allows you to implement custom retry strategies like exponential backoff, 
+      conditional retries, and delayed retries based on error types.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Implement exponential backoff strategy</li>
+      <li>✅ Retry only specific error types</li>
+      <li>✅ Add delays between retry attempts</li>
+      <li>✅ Complex retry logic with conditions</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Watch exponential backoff in action! Each retry waits longer than the previous one.</p>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label for="strategy">Retry Strategy:</label>
+        <select id="strategy" [(ngModel)]="retryStrategy" [disabled]="loading()">
+          <option value="exponential">Exponential Backoff</option>
+          <option value="fixed">Fixed Delay (1s)</option>
+          <option value="immediate">Immediate Retry</option>
+        </select>
+      </div>
+      
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Retrying...' : '▶️ Run with RetryWhen' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ loadingMessage() }}</p>
+        @if (nextRetryDelay() > 0) {
+          <div class="retry-countdown">
+            Next retry in: {{ nextRetryDelay() / 1000 }}s
+          </div>
+        }
+      </div>
+    }
+
+    @if (attempts().length > 0) {
+      <div class="attempts-panel">
+        <h3>📊 Retry Timeline</h3>
+        <div class="timeline-container">
+          @for (attempt of attempts(); track attempt.number) {
+            <div class="timeline-item" [class.success]="attempt.success" [class.failed]="!attempt.success">
+              <div class="timeline-marker">
+                {{ attempt.success ? '✅' : '❌' }}
+              </div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <strong>Attempt {{ attempt.number }}</strong>
+                  <span class="timeline-time">{{ attempt.time }}ms</span>
+                </div>
+                <p class="timeline-message">{{ attempt.message }}</p>
+                @if (attempt.delay > 0) {
+                  <span class="timeline-delay">⏱️ Waited {{ attempt.delay }}ms before retry</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (finalError()) {
+      <div class="error-state">
+        <h3>❌ Maximum Retries Reached</h3>
+        <p>{{ finalError() }}</p>
+        <p class="error-hint">Exhausted all retry attempts with {{ retryStrategy }} strategy</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Success After Retries!</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Attempts:</strong> {{ attempts().length }}
+          </span>
+          <span class="stat">
+            <strong>Strategy:</strong> {{ retryStrategy }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Error Notification</h4>
+          <p>When an error occurs, retryWhen receives it as a notification</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Custom Logic</h4>
+          <p>Your custom function decides whether and when to retry</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Delay Strategy</h4>
+          <p>Apply delays (exponential backoff, fixed, etc.) before retry</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Resubscribe or Error</h4>
+          <p>Either resubscribe to source or propagate the error</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>📡 API Rate Limiting</h4>
+        <p>Exponential backoff for rate-limited APIs</p>
+        <code>retryWhen(errors => errors.pipe(delay(2 ** retryCount * 1000)))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔐 Authentication Retry</h4>
+        <p>Retry only on 401 errors</p>
+        <code>retryWhen(errors => errors.pipe(filter(e => e.status === 401)))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🌐 Network Recovery</h4>
+        <p>Wait for network before retrying</p>
+        <code>retryWhen(errors => errors.pipe(delayWhen(() => networkOnline$)))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>⏰ Time-based Retry</h4>
+        <p>Retry during business hours only</p>
+        <code>retryWhen(errors => errors.pipe(delayWhen(() => waitForBusinessHours())))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section info">
+    <h2>💡 Retry Strategies Explained</h2>
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <h4>🚀 Exponential Backoff</h4>
+        <p>Delay increases exponentially: 1s, 2s, 4s, 8s...</p>
+        <div class="strategy-formula">delay = 2^attempt × 1000ms</div>
+        <p class="strategy-use">Best for: Rate-limited APIs, server overload</p>
+      </div>
+      <div class="strategy-card">
+        <h4>⏱️ Fixed Delay</h4>
+        <p>Same delay between all retries: 1s, 1s, 1s...</p>
+        <div class="strategy-formula">delay = 1000ms</div>
+        <p class="strategy-use">Best for: Predictable retry timing</p>
+      </div>
+      <div class="strategy-card">
+        <h4>⚡ Immediate</h4>
+        <p>No delay between retries</p>
+        <div class="strategy-formula">delay = 0ms</div>
+        <p class="strategy-use">Best for: Quick transient errors</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Complex operator:</strong> Requires understanding of higher-order Observables</li>
+      <li><strong>Must emit to retry:</strong> The notifier Observable must emit to trigger retry</li>
+      <li><strong>Error propagation:</strong> If notifier errors or completes, retry stops</li>
+      <li><strong>Memory consideration:</strong> Long retry chains can accumulate memory</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use exponential backoff for production systems</li>
+      <li>Set maximum retry limits to prevent infinite loops</li>
+      <li>Log retry attempts for monitoring and debugging</li>
+      <li>Consider error types when deciding to retry</li>
+      <li>Add jitter to prevent thundering herd problem</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/error-handling/retry" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">retry</span>
+        <span class="desc">Simple retry logic</span>
+      </a>
+      <a routerLink="/error-handling/catcherror" class="operator-link">
+        <span class="icon">🛡️</span>
+        <span class="name">catchError</span>
+        <span class="desc">Handle errors gracefully</span>
+      </a>
+      <a routerLink="/utility/delay" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">delay</span>
+        <span class="desc">Delay emissions</span>
+      </a>
+    </div>
+  </section>
+</div>

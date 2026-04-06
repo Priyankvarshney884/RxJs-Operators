@@ -1,0 +1,241 @@
+@import '../../filtering/filter-example/filter-example.component.scss';
+
+.difficulty.advanced {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  select {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: white;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.retry-countdown {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #dbeafe;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e40af;
+  text-align: center;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.attempts-panel {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+
+  h3 {
+    color: #1f2937;
+    margin-bottom: 1rem;
+  }
+}
+
+.timeline-container {
+  position: relative;
+  padding-left: 2rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -1.5rem;
+  width: 2rem;
+  height: 2rem;
+  background: white;
+  border: 3px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+
+  .success & {
+    border-color: #10b981;
+    background: #d1fae5;
+  }
+
+  .failed & {
+    border-color: #ef4444;
+    background: #fee2e2;
+  }
+}
+
+.timeline-content {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-left: 1rem;
+
+  .success & {
+    border-color: #10b981;
+    background: #f0fdf4;
+  }
+
+  .failed & {
+    border-color: #ef4444;
+    background: #fef2f2;
+  }
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  strong {
+    color: #1f2937;
+    font-size: 0.95rem;
+  }
+}
+
+.timeline-time {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.timeline-message {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin: 0.5rem 0;
+}
+
+.timeline-delay {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.error-hint {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+
+.section.info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.strategy-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+
+  h4 {
+    color: #1e40af;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #4b5563;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.strategy-formula {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  margin: 0.75rem 0;
+  text-align: center;
+}
+
+.strategy-use {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 0.75rem;
+}
+
+.section.warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.warning-list {
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: 0.75rem 0;
+    color: #92400e;
+    border-bottom: 1px solid #fde68a;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      color: #78350f;
+    }
+  }
+}
+
+// Made with Bob

@@ -1,0 +1,221 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔄 retry Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is retry?</h2>
+    <p class="description">
+      The <code>retry</code> operator automatically resubscribes to the source Observable when an error 
+      occurs, attempting to complete successfully. It's useful for handling transient failures like 
+      network issues or temporary server problems.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Handle temporary network failures</li>
+      <li>✅ Retry failed HTTP requests automatically</li>
+      <li>✅ Deal with intermittent server issues</li>
+      <li>✅ Implement resilient data fetching</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Simulate a flaky API that fails randomly. Watch retry attempt to recover!</p>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label for="retryCount">Retry Count:</label>
+        <select id="retryCount" [(ngModel)]="retryCount" [disabled]="loading()">
+          <option [value]="1">1 retry</option>
+          <option [value]="2">2 retries</option>
+          <option [value]="3">3 retries</option>
+          <option [value]="5">5 retries</option>
+        </select>
+      </div>
+      
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Attempting...' : '▶️ Run with Retry' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ loadingMessage() }}</p>
+        <div class="attempt-counter">
+          Attempt {{ currentAttempt() }} of {{ retryCount + 1 }}
+        </div>
+      </div>
+    }
+
+    @if (attempts().length > 0) {
+      <div class="attempts-panel">
+        <h3>📊 Retry Attempts</h3>
+        <div class="attempts-timeline">
+          @for (attempt of attempts(); track attempt.number) {
+            <div class="attempt-item" [class.success]="attempt.success" [class.failed]="!attempt.success">
+              <div class="attempt-badge">
+                {{ attempt.success ? '✅' : '❌' }} Attempt {{ attempt.number }}
+              </div>
+              <div class="attempt-details">
+                <span class="attempt-time">{{ attempt.time }}ms</span>
+                <span class="attempt-status">{{ attempt.message }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (finalError()) {
+      <div class="error-state">
+        <h3>❌ All Retries Exhausted</h3>
+        <p>{{ finalError() }}</p>
+        <p class="error-hint">After {{ retryCount }} retries, the operation still failed</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Success!</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Successful Attempt:</strong> {{ currentAttempt() }}
+          </span>
+          <span class="stat">
+            <strong>Items:</strong> {{ result()?.length }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Initial Attempt</h4>
+          <p>The source Observable executes for the first time</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Error Occurs</h4>
+          <p>If an error happens, retry catches it</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Resubscribe</h4>
+          <p>Automatically resubscribes to the source Observable</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Success or Exhaust</h4>
+          <p>Either succeeds or exhausts all retry attempts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🌐 Network Requests</h4>
+        <p>Retry failed HTTP calls automatically</p>
+        <code>http.get(url).pipe(retry(3))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📡 WebSocket Reconnection</h4>
+        <p>Reconnect when connection drops</p>
+        <code>websocket$.pipe(retry({{ '{' }} delay: 1000 {{ '}' }}))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>💾 Database Operations</h4>
+        <p>Retry transient database errors</p>
+        <code>db.query().pipe(retry(2))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔐 Authentication</h4>
+        <p>Retry token refresh on failure</p>
+        <code>refreshToken().pipe(retry(1))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Immediate retry:</strong> retry() resubscribes immediately without delay</li>
+      <li><strong>Count parameter:</strong> Specifies maximum number of retry attempts</li>
+      <li><strong>Use with delay:</strong> Consider using retryWhen for delayed retries</li>
+      <li><strong>Idempotent operations:</strong> Best for operations that can be safely repeated</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Set reasonable retry limits to avoid infinite loops</li>
+      <li>Use retry for transient errors only</li>
+      <li>Combine with catchError for final error handling</li>
+      <li>Consider exponential backoff with retryWhen</li>
+      <li>Log retry attempts for debugging</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/error-handling/retrywhen" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">retryWhen</span>
+        <span class="desc">Conditional retry with delay</span>
+      </a>
+      <a routerLink="/error-handling/catcherror" class="operator-link">
+        <span class="icon">🛡️</span>
+        <span class="name">catchError</span>
+        <span class="desc">Handle errors gracefully</span>
+      </a>
+      <a routerLink="/utility/delay" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">delay</span>
+        <span class="desc">Delay emissions</span>
+      </a>
+    </div>
+  </section>
+</div>

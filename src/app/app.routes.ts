@@ -67,6 +67,30 @@ export const routes: Routes = [
     loadComponent: () => import('./features/combination/zip-example/zip-example.component').then(m => m.ZipExampleComponent)
   },
   {
+    path: 'error-handling/catcherror',
+    loadComponent: () => import('./features/error-handling/catcherror-example/catcherror-example.component').then(m => m.CatchErrorExampleComponent)
+  },
+  {
+    path: 'error-handling/retry',
+    loadComponent: () => import('./features/error-handling/retry-example/retry-example.component').then(m => m.RetryExampleComponent)
+  },
+  {
+    path: 'error-handling/retrywhen',
+    loadComponent: () => import('./features/error-handling/retrywhen-example/retrywhen-example.component').then(m => m.RetryWhenExampleComponent)
+  },
+  {
+    path: 'utility/tap',
+    loadComponent: () => import('./features/utility/tap-example/tap-example.component').then(m => m.TapExampleComponent)
+  },
+  {
+    path: 'utility/delay',
+    loadComponent: () => import('./features/utility/delay-example/delay-example.component').then(m => m.DelayExampleComponent)
+  },
+  {
+    path: 'utility/finalize',
+    loadComponent: () => import('./features/utility/finalize-example/finalize-example.component').then(m => m.FinalizeExampleComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }
