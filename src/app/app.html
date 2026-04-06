@@ -1,0 +1,145 @@
+<div class="app-container">
+  <!-- Header -->
+  <header class="app-header">
+    <button class="menu-toggle" (click)="toggleSidebar()">
+      <span>☰</span>
+    </button>
+    <h1 class="app-title">{{ title() }}</h1>
+    <div class="header-actions">
+      <a href="https://rxjs.dev" target="_blank" class="doc-link">📚 RxJS Docs</a>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" [class.open]="sidebarOpen()">
+      <nav class="nav-menu">
+        <a routerLink="/home" routerLinkActive="active" class="nav-item home">
+          <span class="icon">🏠</span>
+          <span class="label">Home</span>
+        </a>
+
+        <div class="nav-section">
+          <div class="section-title">Operator Categories</div>
+          
+          <a routerLink="/transformation" routerLinkActive="active" class="nav-item">
+            <span class="icon">🔄</span>
+            <span class="label">Transformation</span>
+          </a>
+          
+          <a routerLink="/filtering" routerLinkActive="active" class="nav-item">
+            <span class="icon">🔍</span>
+            <span class="label">Filtering</span>
+          </a>
+          
+          <a routerLink="/combination" routerLinkActive="active" class="nav-item">
+            <span class="icon">🔗</span>
+            <span class="label">Combination</span>
+          </a>
+          
+          <a routerLink="/error-handling" routerLinkActive="active" class="nav-item">
+            <span class="icon">⚠️</span>
+            <span class="label">Error Handling</span>
+          </a>
+          
+          <a routerLink="/utility" routerLinkActive="active" class="nav-item">
+            <span class="icon">🛠️</span>
+            <span class="label">Utility</span>
+          </a>
+          
+          <a routerLink="/creation" routerLinkActive="active" class="nav-item">
+            <span class="icon">✨</span>
+            <span class="label">Creation</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="section-title">Transformation Operators</div>
+          
+          <a routerLink="/transformation/map" routerLinkActive="active" class="nav-item sub">
+            <span class="label">map</span>
+            <span class="badge beginner">Beginner</span>
+          </a>
+          
+          <a routerLink="/transformation/switchmap" routerLinkActive="active" class="nav-item sub">
+            <span class="label">switchMap</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+          
+          <a routerLink="/transformation/mergemap" routerLinkActive="active" class="nav-item sub">
+            <span class="label">mergeMap</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+          
+          <a routerLink="/transformation/concatmap" routerLinkActive="active" class="nav-item sub">
+            <span class="label">concatMap</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+          
+          <a routerLink="/transformation/exhaustmap" routerLinkActive="active" class="nav-item sub">
+            <span class="label">exhaustMap</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="section-title">Filtering Operators</div>
+          
+          <a routerLink="/filtering/filter" routerLinkActive="active" class="nav-item sub">
+            <span class="label">filter</span>
+            <span class="badge beginner">Beginner</span>
+          </a>
+          
+          <a routerLink="/filtering/debouncetime" routerLinkActive="active" class="nav-item sub">
+            <span class="label">debounceTime</span>
+            <span class="badge beginner">Beginner</span>
+          </a>
+          
+          <a routerLink="/filtering/distinctuntilchanged" routerLinkActive="active" class="nav-item sub">
+            <span class="label">distinctUntilChanged</span>
+            <span class="badge beginner">Beginner</span>
+          </a>
+          
+          <a routerLink="/filtering/take" routerLinkActive="active" class="nav-item sub">
+            <span class="label">take</span>
+            <span class="badge beginner">Beginner</span>
+          </a>
+          
+          <a routerLink="/filtering/skip" routerLinkActive="active" class="nav-item sub">
+            <span class="label">skip</span>
+            <span class="badge beginner">Beginner</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="section-title">Combination Operators</div>
+          
+          <a routerLink="/combination/forkjoin" routerLinkActive="active" class="nav-item sub">
+            <span class="label">forkJoin</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+          
+          <a routerLink="/combination/combinelatest" routerLinkActive="active" class="nav-item sub">
+            <span class="label">combineLatest</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+          
+          <a routerLink="/combination/merge" routerLinkActive="active" class="nav-item sub">
+            <span class="label">merge</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+          
+          <a routerLink="/combination/zip" routerLinkActive="active" class="nav-item sub">
+            <span class="label">zip</span>
+            <span class="badge intermediate">Intermediate</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,184 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔗 zip Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is zip?</h2>
+    <p class="description">
+      The <code>zip</code> operator combines multiple Observables by pairing their emissions by index. 
+      It waits for each Observable to emit, then combines those values into an array or object. 
+      Like a zipper, it pairs values one-to-one.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Match requests with responses</li>
+      <li>✅ Pair related data streams</li>
+      <li>✅ Synchronize parallel operations</li>
+      <li>✅ Combine data by position/index</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Watch how zip pairs emissions from a fast source (800ms) with a slow source (1500ms)</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="running()">
+        {{ running() ? '⏳ Running...' : '▶️ Start Zip Example' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="running()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    <div class="sources-info">
+      <div class="source-badge fast">Fast Source: Every 800ms (6 values)</div>
+      <div class="source-badge slow">Slow Source: Every 1500ms (4 values)</div>
+    </div>
+
+    @if (pairs().length > 0) {
+      <div class="pairs-display">
+        <h3>🤝 Paired Emissions</h3>
+        <p class="info-text">zip waits for BOTH sources to emit before creating a pair</p>
+        <div class="pairs-grid">
+          @for (pair of pairs(); track $index) {
+            <div class="pair-card">
+              <div class="pair-header">Pair {{ $index + 1 }}</div>
+              <div class="pair-content">
+                <div class="pair-value fast">
+                  <span class="label">Fast:</span>
+                  <span class="value">{{ pair.fast }}</span>
+                </div>
+                <div class="pair-connector">⟷</div>
+                <div class="pair-value slow">
+                  <span class="label">Slow:</span>
+                  <span class="value">{{ pair.slow }}</span>
+                </div>
+              </div>
+              <div class="pair-time">{{ pair.time }}</div>
+            </div>
+          }
+        </div>
+        @if (!running() && pairs().length > 0) {
+          <p class="completion-message">
+            ✅ Completed! Created {{ pairs().length }} pairs. 
+            Note: Fast source had 6 values but only 4 pairs were created (limited by slow source).
+          </p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Wait for All Sources</h4>
+          <p>zip waits for each Observable to emit at least once</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Pair by Index</h4>
+          <p>Combines the 1st emission from each, then 2nd, then 3rd, etc.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Complete When Any Completes</h4>
+          <p>Completes when the shortest Observable completes</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>📨 Request/Response Pairing</h4>
+        <p>Match API requests with their responses</p>
+        <code>zip(requests$, responses$)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎬 Video/Audio Sync</h4>
+        <p>Synchronize video frames with audio</p>
+        <code>zip(videoFrames$, audioSamples$)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📊 Data Correlation</h4>
+        <p>Pair related data from different sources</p>
+        <code>zip(userIds$, userDetails$)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 Batch Processing</h4>
+        <p>Process items with their metadata</p>
+        <code>zip(items$, metadata$)</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Slowest wins:</strong> zip is limited by the slowest Observable</li>
+      <li><strong>Memory usage:</strong> Buffers values until all sources emit</li>
+      <li><strong>Completion:</strong> Completes when ANY source completes</li>
+      <li><strong>Strict pairing:</strong> Values are paired by index, not by time</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use when order/pairing matters</li>
+      <li>Be aware of memory buffering</li>
+      <li>Consider combineLatest if you need latest values</li>
+      <li>Great for synchronizing streams</li>
+      <li>Completes when shortest Observable completes</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/combination/combinelatest" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">combineLatest</span>
+        <span class="desc">Combine latest values</span>
+      </a>
+      <a routerLink="/combination/forkjoin" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">forkJoin</span>
+        <span class="desc">Wait for all to complete</span>
+      </a>
+      <a routerLink="/combination/merge" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">merge</span>
+        <span class="desc">Merge streams</span>
+      </a>
+    </div>
+  </section>
+</div>

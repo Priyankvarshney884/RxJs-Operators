@@ -1,0 +1,177 @@
+<div class="operator-example">
+  <!-- Header -->
+  <div class="example-header">
+    <h1>🔍 filter Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <!-- Description -->
+  <section class="section">
+    <h2>What is filter?</h2>
+    <p class="description">
+      The <code>filter</code> operator emits only those values from the source Observable 
+      that satisfy a specified predicate function. It's similar to Array.filter() in JavaScript.
+    </p>
+  </section>
+
+  <!-- When to Use -->
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Filter data based on conditions</li>
+      <li>✅ Remove null/undefined values</li>
+      <li>✅ Conditional processing of events</li>
+      <li>✅ Data validation and sanitization</li>
+    </ul>
+  </section>
+
+  <!-- Code Example -->
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <!-- Interactive Demo -->
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '▶️ Run Example' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching and filtering users...</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error</h3>
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Result</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Execution Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Total Users:</strong> {{ totalUsers() }}
+          </span>
+          <span class="stat">
+            <strong>Filtered Users:</strong> {{ result()?.length }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- Explanation -->
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Source Observable</h4>
+          <p>We start with an Observable that emits all user objects from the API</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Apply filter Operator</h4>
+          <p>The filter operator tests each user with a predicate function (age > 25 && active)</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Filtered Output</h4>
+          <p>Only users that pass the test are emitted to the subscriber</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real-World Use Cases -->
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🛒 Product Filtering</h4>
+        <p>Filter products based on price, availability, or category</p>
+        <code>filter(product => product.price > 0 && product.inStock)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔐 Permission Checks</h4>
+        <p>Only process events from authorized users</p>
+        <code>filter(user => user.role === 'admin')</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🚫 Remove Null Values</h4>
+        <p>Filter out null or undefined values from streams</p>
+        <code>filter(value => value != null)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📧 Email Validation</h4>
+        <p>Only process valid email addresses</p>
+        <code>filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Best Practices -->
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Keep predicate functions pure (no side effects)</li>
+      <li>Use filter early in the pipeline to reduce processing</li>
+      <li>Combine with other operators for complex filtering</li>
+      <li>Consider performance for large datasets</li>
+      <li>Handle edge cases (null, undefined, empty arrays)</li>
+    </ul>
+  </section>
+
+  <!-- Related Operators -->
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/distinctuntilchanged" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">distinctUntilChanged</span>
+        <span class="desc">Filter duplicate consecutive values</span>
+      </a>
+      <a routerLink="/filtering/take" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">take</span>
+        <span class="desc">Take first N values</span>
+      </a>
+      <a routerLink="/filtering/first" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">first</span>
+        <span class="desc">Take first matching value</span>
+      </a>
+    </div>
+  </section>
+</div>

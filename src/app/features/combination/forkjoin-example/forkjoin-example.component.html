@@ -1,0 +1,214 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔗 forkJoin Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is forkJoin?</h2>
+    <p class="description">
+      The <code>forkJoin</code> operator waits for all input Observables to complete, 
+      then emits an object/array with the last value from each. It's like Promise.all() 
+      for Observables - perfect for loading multiple resources in parallel.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Load multiple independent resources in parallel</li>
+      <li>✅ Dashboard initialization (fetch all data at once)</li>
+      <li>✅ Parallel API calls that must all succeed</li>
+      <li>✅ Combine results from multiple sources</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Load users, products, and orders in parallel. All requests run simultaneously!</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading All Data...' : '▶️ Load Dashboard Data' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading users, products, and orders in parallel...</p>
+        <p class="loading-hint">All requests are running simultaneously!</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error</h3>
+        <p>{{ error() }}</p>
+        <p class="error-hint">If any Observable fails, forkJoin will error</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ All Data Loaded Successfully!</h3>
+        
+        <div class="timing-stats">
+          <div class="timing-card">
+            <span class="timing-label">Total Time:</span>
+            <span class="timing-value">{{ executionTime() }}ms</span>
+          </div>
+          <div class="timing-card">
+            <span class="timing-label">Users:</span>
+            <span class="timing-value">{{ individualTimes().users }}ms</span>
+          </div>
+          <div class="timing-card">
+            <span class="timing-label">Products:</span>
+            <span class="timing-value">{{ individualTimes().products }}ms</span>
+          </div>
+          <div class="timing-card">
+            <span class="timing-label">Orders:</span>
+            <span class="timing-value">{{ individualTimes().orders }}ms</span>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <h4>👥 Users</h4>
+            <p class="count">{{ result().summary.totalUsers }} total</p>
+            <div class="preview">
+              <pre>{{ result().users | json }}</pre>
+            </div>
+          </div>
+          
+          <div class="summary-card">
+            <h4>📦 Products</h4>
+            <p class="count">{{ result().summary.totalProducts }} total</p>
+            <div class="preview">
+              <pre>{{ result().products | json }}</pre>
+            </div>
+          </div>
+          
+          <div class="summary-card">
+            <h4>🛒 Orders</h4>
+            <p class="count">{{ result().summary.totalOrders }} total</p>
+            <div class="preview">
+              <pre>{{ result().orders | json }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Start All Observables</h4>
+          <p>All input Observables start executing in parallel</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Wait for Completion</h4>
+          <p>forkJoin waits for ALL Observables to complete</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Emit Combined Result</h4>
+          <p>Once all complete, emits an object with all last values</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>📊 Dashboard Loading</h4>
+        <p>Load all dashboard data at once</p>
+        <code>forkJoin({{ '{' }} users, stats, notifications {{ '}' }})</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔍 Search Multiple Sources</h4>
+        <p>Search across different APIs</p>
+        <code>forkJoin([api1, api2, api3])</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📝 Form Submission</h4>
+        <p>Save multiple related entities</p>
+        <code>forkJoin({{ '{' }} user, profile, settings {{ '}' }})</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📥 Batch Downloads</h4>
+        <p>Download multiple files in parallel</p>
+        <code>forkJoin(fileUrls.map(url => download(url)))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>All must complete:</strong> forkJoin only emits when ALL Observables complete</li>
+      <li><strong>Error handling:</strong> If ANY Observable errors, forkJoin errors immediately</li>
+      <li><strong>Last values only:</strong> Only the last emitted value from each Observable is used</li>
+      <li><strong>Not for infinite streams:</strong> Don't use with Observables that never complete (like intervals)</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use for parallel independent API calls</li>
+      <li>Add error handling with catchError for each Observable</li>
+      <li>Perfect for dashboard/page initialization</li>
+      <li>Combine with loading indicators for better UX</li>
+      <li>Consider timeout for slow requests</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/combination/combinelatest" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">combineLatest</span>
+        <span class="desc">Emit when any Observable emits</span>
+      </a>
+      <a routerLink="/combination/zip" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">zip</span>
+        <span class="desc">Pair emissions by index</span>
+      </a>
+      <a routerLink="/combination/merge" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">merge</span>
+        <span class="desc">Merge multiple streams</span>
+      </a>
+    </div>
+  </section>
+</div>

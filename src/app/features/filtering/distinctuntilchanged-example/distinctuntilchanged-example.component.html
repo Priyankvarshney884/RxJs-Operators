@@ -1,0 +1,160 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔄 distinctUntilChanged Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is distinctUntilChanged?</h2>
+    <p class="description">
+      The <code>distinctUntilChanged</code> operator only emits when the current value is different 
+      from the previous value. It's perfect for preventing duplicate consecutive emissions.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Prevent duplicate API calls</li>
+      <li>✅ Form value changes (skip if same value)</li>
+      <li>✅ State management (avoid redundant updates)</li>
+      <li>✅ Search optimization</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Type in the input below. Try typing the same value multiple times!</p>
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        [formControl]="searchControl"
+        placeholder="Type something..."
+        class="search-input">
+      <button class="btn btn-secondary" (click)="clearResults()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>📤 All Emissions</h3>
+        <p class="count">Count: {{ emissionCount() }}</p>
+        <div class="emissions-list">
+          @for (emission of emissions(); track $index) {
+            <div class="emission-item">{{ $index + 1 }}. "{{ emission }}"</div>
+          }
+          @if (emissions().length === 0) {
+            <p class="empty">No emissions yet</p>
+          }
+        </div>
+      </div>
+
+      <div class="comparison-card distinct">
+        <h3>✨ Distinct Emissions</h3>
+        <p class="count">Count: {{ distinctEmissionCount() }}</p>
+        <div class="emissions-list">
+          @for (emission of distinctEmissions(); track $index) {
+            <div class="emission-item">{{ $index + 1 }}. "{{ emission }}"</div>
+          }
+          @if (distinctEmissions().length === 0) {
+            <p class="empty">No emissions yet</p>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Value Emitted</h4>
+          <p>Each keystroke emits a value from the form control</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Compare with Previous</h4>
+          <p>distinctUntilChanged compares current value with the previous one</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Emit if Different</h4>
+          <p>Only emits if the value has changed from the previous emission</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🔍 Search Optimization</h4>
+        <p>Avoid searching for the same query twice</p>
+        <code>distinctUntilChanged()</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📝 Form Validation</h4>
+        <p>Only validate when value actually changes</p>
+        <code>distinctUntilChanged()</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 State Updates</h4>
+        <p>Prevent redundant state updates</p>
+        <code>distinctUntilChanged()</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🌐 API Calls</h4>
+        <p>Skip duplicate API requests</p>
+        <code>distinctUntilChanged()</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Combine with debounceTime for search inputs</li>
+      <li>Use custom comparator for complex objects</li>
+      <li>Place early in the pipeline to reduce processing</li>
+      <li>Great for performance optimization</li>
+      <li>Works with primitive and reference types</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/debouncetime" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">debounceTime</span>
+        <span class="desc">Wait for silence period</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+        <span class="desc">Filter based on conditions</span>
+      </a>
+      <a routerLink="/filtering/take" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">take</span>
+        <span class="desc">Take first N values</span>
+      </a>
+    </div>
+  </section>
+</div>

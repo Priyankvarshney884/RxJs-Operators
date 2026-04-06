@@ -1,0 +1,173 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>⏭️ skip Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is skip?</h2>
+    <p class="description">
+      The <code>skip</code> operator ignores the first N values emitted by the source Observable. 
+      It's the opposite of take and is useful for skipping initial values or implementing pagination.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Skip initial/default values</li>
+      <li>✅ Pagination (skip to page N)</li>
+      <li>✅ Ignore loading states</li>
+      <li>✅ Skip warmup emissions</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">This example skips the first 3 users and shows the remaining ones</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Loading...' : '▶️ Skip First 3 Users' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching users...</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error</h3>
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ Result</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Execution Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Total Users:</strong> {{ totalUsers() }}
+          </span>
+          <span class="stat">
+            <strong>Skipped:</strong> {{ skippedCount() }}
+          </span>
+          <span class="stat">
+            <strong>Remaining:</strong> {{ result()?.length }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Source Emits</h4>
+          <p>The source Observable starts emitting values</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Skip N Values</h4>
+          <p>skip operator ignores the first N emissions</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Emit Remaining</h4>
+          <p>After skipping N values, all subsequent values are emitted</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>📄 Pagination</h4>
+        <p>Skip to specific page of results</p>
+        <code>skip(page * pageSize)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 Skip Initial State</h4>
+        <p>Ignore default/initial values</p>
+        <code>skip(1)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>⏳ Skip Loading</h4>
+        <p>Skip loading state emissions</p>
+        <code>skip(1)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎯 Warmup Period</h4>
+        <p>Skip initial warmup emissions</p>
+        <code>skip(3)</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Combine with take for pagination (skip + take)</li>
+      <li>Use skip(1) to ignore initial form values</li>
+      <li>Great for implementing "load more" functionality</li>
+      <li>Consider skipWhile for conditional skipping</li>
+      <li>Observable continues after skipping N values</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/take" class="operator-link">
+        <span class="icon">🎯</span>
+        <span class="name">take</span>
+        <span class="desc">Take first N values</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+        <span class="desc">Filter based on conditions</span>
+      </a>
+      <a routerLink="/filtering/first" class="operator-link">
+        <span class="icon">🎯</span>
+        <span class="name">first</span>
+        <span class="desc">Take first matching value</span>
+      </a>
+    </div>
+  </section>
+</div>

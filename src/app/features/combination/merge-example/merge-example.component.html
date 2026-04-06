@@ -1,0 +1,160 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔗 merge Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is merge?</h2>
+    <p class="description">
+      The <code>merge</code> operator combines multiple Observables into one by merging their emissions. 
+      Values are emitted as they arrive from any source - no waiting, no pairing, just a single stream.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Combine multiple event sources</li>
+      <li>✅ Real-time notifications from different channels</li>
+      <li>✅ Multiple user actions into one stream</li>
+      <li>✅ Aggregate data from various sources</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Watch how emissions from 3 different sources merge into one stream!</p>
+    
+    <div class="demo-controls">
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="running()">
+        {{ running() ? '⏳ Running...' : '▶️ Start Merge Example' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="running()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    <div class="sources-info">
+      <div class="source-badge source1">Source 1: Every 1s</div>
+      <div class="source-badge source2">Source 2: Every 1.5s</div>
+      <div class="source-badge source3">Source 3: Every 2s</div>
+    </div>
+
+    @if (emissions().length > 0) {
+      <div class="emissions-timeline">
+        <h3>📊 Merged Emissions Timeline</h3>
+        <div class="timeline">
+          @for (emission of emissions(); track $index) {
+            <div class="emission-item" [class]="'source-' + emission.source.split(' ')[1].toLowerCase()">
+              <span class="emission-badge">{{ emission.source }}</span>
+              <span class="emission-value">Value: {{ emission.value }}</span>
+              <span class="emission-time">{{ emission.time }}</span>
+            </div>
+          }
+        </div>
+        @if (!running() && emissions().length > 0) {
+          <p class="completion-message">✅ All sources completed! Total emissions: {{ emissions().length }}</p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Subscribe to All</h4>
+          <p>merge subscribes to all input Observables simultaneously</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Emit Immediately</h4>
+          <p>As soon as any source emits, the value is passed through</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Complete When All Complete</h4>
+          <p>The merged Observable completes when all sources complete</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🔔 Notifications</h4>
+        <p>Merge notifications from multiple channels</p>
+        <code>merge(email$, sms$, push$)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎮 User Input</h4>
+        <p>Combine keyboard, mouse, and touch events</p>
+        <code>merge(keyboard$, mouse$, touch$)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📡 Real-time Data</h4>
+        <p>Merge WebSocket and polling updates</p>
+        <code>merge(websocket$, polling$)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 Multiple APIs</h4>
+        <p>Combine results from different APIs</p>
+        <code>merge(api1$, api2$, api3$)</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use for independent event streams</li>
+      <li>Order of emissions is not guaranteed</li>
+      <li>All sources run concurrently</li>
+      <li>Consider mergeAll for dynamic sources</li>
+      <li>Great for event aggregation</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/combination/combinelatest" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">combineLatest</span>
+        <span class="desc">Combine latest values</span>
+      </a>
+      <a routerLink="/combination/forkjoin" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">forkJoin</span>
+        <span class="desc">Wait for all to complete</span>
+      </a>
+      <a routerLink="/combination/zip" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">zip</span>
+        <span class="desc">Pair by index</span>
+      </a>
+    </div>
+  </section>
+</div>

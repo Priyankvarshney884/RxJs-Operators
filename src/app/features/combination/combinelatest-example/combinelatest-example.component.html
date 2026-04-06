@@ -1,0 +1,186 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔗 combineLatest Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is combineLatest?</h2>
+    <p class="description">
+      The <code>combineLatest</code> operator combines multiple Observables and emits whenever 
+      ANY of them emits, using the latest value from each. Perfect for reactive forms and 
+      multiple filter combinations.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Multiple filters/search criteria</li>
+      <li>✅ Form validation with multiple fields</li>
+      <li>✅ Real-time updates from multiple sources</li>
+      <li>✅ Reactive UI with dependent inputs</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Change any filter below - results update immediately!</p>
+    
+    <div class="filters-container">
+      <div class="filter-group">
+        <label>Search:</label>
+        <input 
+          type="text" 
+          [formControl]="searchControl"
+          placeholder="Search products..."
+          class="filter-input">
+      </div>
+
+      <div class="filter-group">
+        <label>Category:</label>
+        <select [formControl]="categoryControl" class="filter-select">
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort By:</label>
+        <select [formControl]="sortControl" class="filter-select">
+          @for (opt of sortOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+      </div>
+
+      <button class="btn btn-secondary" (click)="clearFilters()">
+        🗑️ Clear Filters
+      </button>
+    </div>
+
+    <div class="stats-bar">
+      <span class="stat-badge">
+        <strong>Emissions:</strong> {{ emissionCount() }}
+      </span>
+      <span class="stat-badge">
+        <strong>Results:</strong> {{ result().length }}
+      </span>
+    </div>
+
+    @if (result().length > 0) {
+      <div class="result-panel">
+        <h3>✅ Filtered Products</h3>
+        <div class="products-grid">
+          @for (product of result(); track product.id) {
+            <div class="product-card">
+              <h4>{{ product.name }}</h4>
+              <p class="category">{{ product.category }}</p>
+              <p class="price">${{ product.price }}</p>
+              <span class="stock" [class.in-stock]="product.inStock">
+                {{ product.inStock ? '✅ In Stock' : '❌ Out of Stock' }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="no-results">
+        <p>No products match your filters</p>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Wait for All to Emit</h4>
+          <p>Waits for each Observable to emit at least once</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Emit on Any Change</h4>
+          <p>Whenever ANY Observable emits, combines latest values from all</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Continuous Updates</h4>
+          <p>Keeps emitting as long as any source Observable emits</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🔍 Advanced Search</h4>
+        <p>Combine search, filters, and sorting</p>
+        <code>combineLatest([search$, filter$, sort$])</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📝 Form Validation</h4>
+        <p>Validate when any field changes</p>
+        <code>combineLatest([email$, password$])</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📊 Dashboard Updates</h4>
+        <p>Update when any data source changes</p>
+        <code>combineLatest([users$, stats$])</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎮 Game State</h4>
+        <p>Combine player position and game state</p>
+        <code>combineLatest([position$, state$])</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use startWith() to provide initial values</li>
+      <li>Combine with debounceTime for search inputs</li>
+      <li>Perfect for reactive forms with multiple fields</li>
+      <li>All Observables must emit at least once</li>
+      <li>Consider performance with many rapid emissions</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/combination/forkjoin" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">forkJoin</span>
+        <span class="desc">Wait for all to complete</span>
+      </a>
+      <a routerLink="/combination/zip" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">zip</span>
+        <span class="desc">Pair by index</span>
+      </a>
+      <a routerLink="/combination/merge" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">merge</span>
+        <span class="desc">Merge streams</span>
+      </a>
+    </div>
+  </section>
+</div>

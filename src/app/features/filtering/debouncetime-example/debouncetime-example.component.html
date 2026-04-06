@@ -1,0 +1,185 @@
+<div class="operator-example">
+  <!-- Header -->
+  <div class="example-header">
+    <h1>⏱️ debounceTime Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <!-- Description -->
+  <section class="section">
+    <h2>What is debounceTime?</h2>
+    <p class="description">
+      The <code>debounceTime</code> operator delays emissions from the source Observable 
+      until a specified time has passed without another emission. It's perfect for scenarios 
+      like search inputs where you want to wait for the user to stop typing.
+    </p>
+  </section>
+
+  <!-- When to Use -->
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Search input (wait for user to stop typing)</li>
+      <li>✅ Window resize events</li>
+      <li>✅ Scroll events</li>
+      <li>✅ Auto-save functionality</li>
+    </ul>
+  </section>
+
+  <!-- Code Example -->
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <!-- Interactive Demo -->
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Type in the search box below. Notice how the search only triggers 300ms after you stop typing!</p>
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        [formControl]="searchControl"
+        placeholder="Search users by name or email..."
+        class="search-input">
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    <div class="search-stats">
+      <span class="stat-badge">
+        <strong>Keystrokes:</strong> {{ searchCount() }}
+      </span>
+      @if (lastSearchTime()) {
+        <span class="stat-badge">
+          <strong>Last Search:</strong> {{ lastSearchTime() }}
+        </span>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Searching...</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-state">
+        <h3>❌ Error</h3>
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (result() && result().length > 0) {
+      <div class="result-panel">
+        <h3>✅ Search Results</h3>
+        <p class="result-count">Found {{ result().length }} user(s)</p>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+
+    @if (result() && result().length === 0 && searchControl.value) {
+      <div class="no-results">
+        <p>No users found matching "{{ searchControl.value }}"</p>
+      </div>
+    }
+  </section>
+
+  <!-- Explanation -->
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>User Types</h4>
+          <p>Each keystroke emits a value from the form control</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>debounceTime Waits</h4>
+          <p>The operator waits 300ms. If another keystroke occurs, the timer resets</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Search Executes</h4>
+          <p>After 300ms of silence, the search API call is made</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real-World Use Cases -->
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🔍 Search Autocomplete</h4>
+        <p>Wait for user to finish typing before searching</p>
+        <code>debounceTime(300)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>💾 Auto-save</h4>
+        <p>Save form data after user stops editing</p>
+        <code>debounceTime(1000)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📏 Window Resize</h4>
+        <p>Handle resize events after user stops resizing</p>
+        <code>debounceTime(200)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📜 Infinite Scroll</h4>
+        <p>Load more data after user stops scrolling</p>
+        <code>debounceTime(150)</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Best Practices -->
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use 300ms for search inputs (good balance)</li>
+      <li>Combine with distinctUntilChanged to avoid duplicate searches</li>
+      <li>Use switchMap to cancel previous requests</li>
+      <li>Adjust timing based on use case (faster for UI, slower for API)</li>
+      <li>Consider user experience - too long feels sluggish</li>
+    </ul>
+  </section>
+
+  <!-- Related Operators -->
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/distinctuntilchanged" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">distinctUntilChanged</span>
+        <span class="desc">Skip duplicate consecutive values</span>
+      </a>
+      <a routerLink="/transformation/switchmap" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">switchMap</span>
+        <span class="desc">Cancel previous requests</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+        <span class="desc">Filter based on conditions</span>
+      </a>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,197 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🎯 take Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is take?</h2>
+    <p class="description">
+      The <code>take</code> operator emits only the first N values from the source Observable, 
+      then completes. It's perfect for limiting the number of emissions and automatically unsubscribing.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Get first N items from a stream</li>
+      <li>✅ Limit results (pagination)</li>
+      <li>✅ One-time operations</li>
+      <li>✅ Automatic unsubscription</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    
+    <div class="demo-section">
+      <h3>Example 1: Take First 3 Users</h3>
+      <div class="demo-controls">
+        <button 
+          class="btn btn-primary" 
+          (click)="runExample()"
+          [disabled]="loading()">
+          {{ loading() ? '⏳ Loading...' : '▶️ Get First 3 Users' }}
+        </button>
+        <button 
+          class="btn btn-secondary" 
+          (click)="clearResults()"
+          [disabled]="loading()">
+          🗑️ Clear
+        </button>
+      </div>
+
+      @if (loading()) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Fetching users...</p>
+        </div>
+      }
+
+      @if (error()) {
+        <div class="error-state">
+          <h3>❌ Error</h3>
+          <p>{{ error() }}</p>
+        </div>
+      }
+
+      @if (result()) {
+        <div class="result-panel">
+          <h3>✅ Result</h3>
+          <div class="result-stats">
+            <span class="stat">
+              <strong>Execution Time:</strong> {{ executionTime() }}ms
+            </span>
+            <span class="stat">
+              <strong>Total Available:</strong> {{ totalUsers() }}
+            </span>
+            <span class="stat">
+              <strong>Taken:</strong> {{ result()?.length }}
+            </span>
+          </div>
+          <div class="result-content">
+            <pre>{{ result() | json }}</pre>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="demo-section">
+      <h3>Example 2: Take First 5 from Interval</h3>
+      <p class="demo-instruction">This will emit values every 500ms and automatically stop after 5 emissions</p>
+      <button 
+        class="btn btn-primary" 
+        (click)="runIntervalExample()"
+        [disabled]="intervalRunning()">
+        {{ intervalRunning() ? '⏳ Running...' : '▶️ Start Interval' }}
+      </button>
+
+      @if (intervalValues().length > 0) {
+        <div class="interval-display">
+          <h4>Emitted Values:</h4>
+          <div class="values-list">
+            @for (value of intervalValues(); track $index) {
+              <span class="value-badge">{{ value }}</span>
+            }
+          </div>
+          @if (!intervalRunning() && intervalValues().length === 5) {
+            <p class="completion-message">✅ Completed! Observable automatically unsubscribed after 5 emissions.</p>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Source Emits</h4>
+          <p>The source Observable starts emitting values</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Count Emissions</h4>
+          <p>take operator counts each emission until reaching N</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Complete</h4>
+          <p>After N emissions, the Observable completes automatically</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>📄 Pagination</h4>
+        <p>Get first page of results</p>
+        <code>take(10)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎯 One-time Fetch</h4>
+        <p>Get data once and unsubscribe</p>
+        <code>take(1)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔔 Limit Notifications</h4>
+        <p>Show only first 5 notifications</p>
+        <code>take(5)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>⏱️ Timeout Alternative</h4>
+        <p>Take first N emissions within time</p>
+        <code>take(3)</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use take(1) instead of first() for simpler cases</li>
+      <li>Automatic unsubscription prevents memory leaks</li>
+      <li>Combine with skip for pagination</li>
+      <li>Great for limiting API results</li>
+      <li>Observable completes after N emissions</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/skip" class="operator-link">
+        <span class="icon">⏭️</span>
+        <span class="name">skip</span>
+        <span class="desc">Skip first N values</span>
+      </a>
+      <a routerLink="/filtering/first" class="operator-link">
+        <span class="icon">🎯</span>
+        <span class="name">first</span>
+        <span class="desc">Take first matching value</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+        <span class="desc">Filter based on conditions</span>
+      </a>
+    </div>
+  </section>
+</div>
