@@ -1,0 +1,134 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🏁 last Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is last?</h2>
+    <p class="description">
+      The <code>last</code> operator emits only the last value (or the last value that meets a condition) 
+      emitted by the source Observable before it completes. It waits for the source to complete, 
+      then emits the final matching value.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="useCondition" (change)="toggleCondition()">
+          Use condition (value < {{ conditionValue() }})
+        </label>
+      </div>
+      @if (useCondition()) {
+        <div class="control-group">
+          <label>Condition threshold:</label>
+          <input type="number" [(ngModel)]="conditionValue" [disabled]="loading()" min="1" max="10">
+        </div>
+      }
+      <button class="btn btn-primary" (click)="runExample()" [disabled]="loading()">
+        {{ loading() ? '⏳ Running...' : '▶️ Run Example' }}
+      </button>
+      <button class="btn btn-secondary" (click)="clearResults()">🗑️ Clear</button>
+    </div>
+
+    @if (emissions().length > 0) {
+      <div class="result-panel">
+        <h3>📊 All Emissions (0-9)</h3>
+        <div class="emissions-grid">
+          @for (emission of emissions(); track emission.value) {
+            <div class="emission-item" [class.last-value]="emission.isLast">
+              <div class="emission-badge">{{ emission.value }}</div>
+              <span class="emission-time">{{ emission.time }}ms</span>
+              @if (emission.isLast) {
+                <span class="last-label">✓ LAST</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (lastValue() !== null) {
+        <div class="last-result">
+          <h3>🏁 Last Value Emitted</h3>
+          <div class="result-value">{{ lastValue() }}</div>
+          <p class="result-note">
+            @if (useCondition()) {
+              Last value less than {{ conditionValue() }}
+            } @else {
+              Last value from the stream
+            }
+          </p>
+        </div>
+      }
+    }
+  </section>
+
+  <section class="section">
+    <h2>Key Concepts</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>⏳ Waits for Completion</h4>
+        <p>Must wait for source Observable to complete before emitting</p>
+      </div>
+      <div class="concept-card">
+        <h4>🎯 Single Emission</h4>
+        <p>Emits only one value (the last one) then completes</p>
+      </div>
+      <div class="concept-card">
+        <h4>🔍 Optional Predicate</h4>
+        <p>Can filter for last value matching a condition</p>
+      </div>
+      <div class="concept-card">
+        <h4>⚠️ Error Handling</h4>
+        <p>Throws error if no value matches (use default value to prevent)</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Common Use Cases</h2>
+    <ul class="use-cases">
+      <li><strong>Final Value:</strong> Get the last emission from a finite stream</li>
+      <li><strong>Last Match:</strong> Find last item meeting criteria</li>
+      <li><strong>Completion Result:</strong> Get final state after all operations</li>
+      <li><strong>Validation:</strong> Check final value after processing</li>
+    </ul>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Requires Completion:</strong> Source must complete, won't work with infinite streams</li>
+      <li><strong>Memory:</strong> Keeps track of values until completion</li>
+      <li><strong>Timing:</strong> Emission only happens after source completes</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/take" class="operator-link">
+        <span class="icon">🔢</span>
+        <span class="name">take</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+      </a>
+      <a routerLink="/filtering/skip" class="operator-link">
+        <span class="icon">⏭️</span>
+        <span class="name">skip</span>
+      </a>
+    </div>
+  </section>
+</div>

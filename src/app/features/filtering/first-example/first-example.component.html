@@ -1,0 +1,125 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🎯 first Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is first?</h2>
+    <p class="description">
+      The <code>first</code> operator emits only the first value (or the first value that meets a condition) 
+      emitted by the source Observable, then completes. It's perfect for scenarios where you only need 
+      the initial emission or the first match.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="useCondition" (change)="toggleCondition()">
+          Use condition (value > {{ conditionValue() }})
+        </label>
+      </div>
+      @if (useCondition()) {
+        <div class="control-group">
+          <label>Condition threshold:</label>
+          <input type="number" [(ngModel)]="conditionValue" [disabled]="loading()" min="0" max="9">
+        </div>
+      }
+      <button class="btn btn-primary" (click)="runExample()" [disabled]="loading()">
+        {{ loading() ? '⏳ Running...' : '▶️ Run Example' }}
+      </button>
+      <button class="btn btn-secondary" (click)="clearResults()">🗑️ Clear</button>
+    </div>
+
+    @if (emissions().length > 0) {
+      <div class="result-panel">
+        <h3>📊 All Emissions (0-9)</h3>
+        <div class="emissions-grid">
+          @for (emission of emissions(); track emission.value) {
+            <div class="emission-item" [class.first-value]="emission.isFirst">
+              <div class="emission-badge">{{ emission.value }}</div>
+              <span class="emission-time">{{ emission.time }}ms</span>
+              @if (emission.isFirst) {
+                <span class="first-label">✓ FIRST</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (firstValue() !== null) {
+        <div class="first-result">
+          <h3>🎯 First Value Emitted</h3>
+          <div class="result-value">{{ firstValue() }}</div>
+          <p class="result-note">
+            @if (useCondition()) {
+              First value greater than {{ conditionValue() }}
+            } @else {
+              First value from the stream
+            }
+          </p>
+        </div>
+      }
+    }
+  </section>
+
+  <section class="section">
+    <h2>Key Concepts</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>🎯 Single Emission</h4>
+        <p>Emits only one value then completes immediately</p>
+      </div>
+      <div class="concept-card">
+        <h4>🔍 Optional Predicate</h4>
+        <p>Can filter for first value matching a condition</p>
+      </div>
+      <div class="concept-card">
+        <h4>⚠️ Error Handling</h4>
+        <p>Throws error if no value matches (use default value to prevent)</p>
+      </div>
+      <div class="concept-card">
+        <h4>⚡ Early Completion</h4>
+        <p>Unsubscribes from source after first match</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Common Use Cases</h2>
+    <ul class="use-cases">
+      <li><strong>Initial Value:</strong> Get the first emission from a stream</li>
+      <li><strong>First Match:</strong> Find first item meeting criteria</li>
+      <li><strong>Quick Response:</strong> Get immediate result without waiting</li>
+      <li><strong>Validation:</strong> Check if any value meets condition</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/filtering/take" class="operator-link">
+        <span class="icon">🔢</span>
+        <span class="name">take</span>
+      </a>
+      <a routerLink="/filtering/filter" class="operator-link">
+        <span class="icon">🔍</span>
+        <span class="name">filter</span>
+      </a>
+      <a routerLink="/filtering/skip" class="operator-link">
+        <span class="icon">⏭️</span>
+        <span class="name">skip</span>
+      </a>
+    </div>
+  </section>
+</div>

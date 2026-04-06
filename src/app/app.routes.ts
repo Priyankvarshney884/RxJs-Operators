@@ -51,6 +51,14 @@ export const routes: Routes = [
     loadComponent: () => import('./features/filtering/skip-example/skip-example.component').then(m => m.SkipExampleComponent)
   },
   {
+    path: 'filtering/first',
+    loadComponent: () => import('./features/filtering/first-example/first-example.component').then(m => m.FirstExampleComponent)
+  },
+  {
+    path: 'filtering/last',
+    loadComponent: () => import('./features/filtering/last-example/last-example.component').then(m => m.LastExampleComponent)
+  },
+  {
     path: 'combination/forkjoin',
     loadComponent: () => import('./features/combination/forkjoin-example/forkjoin-example.component').then(m => m.ForkJoinExampleComponent)
   },
@@ -67,28 +75,8 @@ export const routes: Routes = [
     loadComponent: () => import('./features/combination/zip-example/zip-example.component').then(m => m.ZipExampleComponent)
   },
   {
-    path: 'error-handling/catcherror',
-    loadComponent: () => import('./features/error-handling/catcherror-example/catcherror-example.component').then(m => m.CatchErrorExampleComponent)
-  },
-  {
-    path: 'error-handling/retry',
-    loadComponent: () => import('./features/error-handling/retry-example/retry-example.component').then(m => m.RetryExampleComponent)
-  },
-  {
-    path: 'error-handling/retrywhen',
-    loadComponent: () => import('./features/error-handling/retrywhen-example/retrywhen-example.component').then(m => m.RetryWhenExampleComponent)
-  },
-  {
-    path: 'utility/tap',
-    loadComponent: () => import('./features/utility/tap-example/tap-example.component').then(m => m.TapExampleComponent)
-  },
-  {
-    path: 'utility/delay',
-    loadComponent: () => import('./features/utility/delay-example/delay-example.component').then(m => m.DelayExampleComponent)
-  },
-  {
-    path: 'utility/finalize',
-    loadComponent: () => import('./features/utility/finalize-example/finalize-example.component').then(m => m.FinalizeExampleComponent)
+    path: 'combination/withlatestfrom',
+    loadComponent: () => import('./features/combination/withlatestfrom-example/withlatestfrom-example.component').then(m => m.WithLatestFromExampleComponent)
   },
   {
     path: 'error-handling/catcherror',
@@ -113,6 +101,10 @@ export const routes: Routes = [
   {
     path: 'utility/finalize',
     loadComponent: () => import('./features/utility/finalize-example/finalize-example.component').then(m => m.FinalizeExampleComponent)
+  },
+  {
+    path: 'utility/timeout',
+    loadComponent: () => import('./features/utility/timeout-example/timeout-example.component').then(m => m.TimeoutExampleComponent)
   },
   {
     path: 'creation/of',
@@ -129,6 +121,10 @@ export const routes: Routes = [
   {
     path: 'creation/timer',
     loadComponent: () => import('./features/creation/timer-example/timer-example.component').then(m => m.TimerExampleComponent)
+  },
+  {
+    path: 'creation/fromevent',
+    loadComponent: () => import('./features/creation/fromevent-example/fromevent-example.component').then(m => m.FromEventExampleComponent)
   },
   {
     path: '**',
