@@ -1,0 +1,154 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🔗 withLatestFrom Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is withLatestFrom?</h2>
+    <p class="description">
+      The <code>withLatestFrom</code> operator combines the source Observable with other Observables 
+      to create an Observable whose values are calculated from the latest values of each. It only emits 
+      when the source Observable emits, taking the most recent values from the other Observables.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>Source interval (ms):</label>
+        <input type="number" [(ngModel)]="sourceInterval" [disabled]="loading()" min="500" max="3000" step="100">
+      </div>
+      <div class="control-group">
+        <label>Other1 interval (ms):</label>
+        <input type="number" [(ngModel)]="other1Interval" [disabled]="loading()" min="300" max="2000" step="100">
+      </div>
+      <div class="control-group">
+        <label>Other2 interval (ms):</label>
+        <input type="number" [(ngModel)]="other2Interval" [disabled]="loading()" min="500" max="3000" step="100">
+      </div>
+      <button class="btn btn-primary" (click)="runExample()" [disabled]="loading()">
+        {{ loading() ? '⏳ Running...' : '▶️ Run Example' }}
+      </button>
+      <button class="btn btn-secondary" (click)="clearResults()">🗑️ Clear</button>
+    </div>
+
+    @if (emissions().length > 0) {
+      <div class="result-panel">
+        <h3>📊 Combined Emissions</h3>
+        <p class="info-text">
+          Source emits every {{ sourceInterval() }}ms, Other1 every {{ other1Interval() }}ms, 
+          Other2 every {{ other2Interval() }}ms
+        </p>
+        <div class="emissions-table">
+          <div class="table-header">
+            <div class="col">Time</div>
+            <div class="col source">Source</div>
+            <div class="col other1">Other1</div>
+            <div class="col other2">Other2</div>
+            <div class="col combined">Combined</div>
+          </div>
+          @for (emission of emissions(); track $index) {
+            <div class="table-row">
+              <div class="col time">{{ emission.time }}ms</div>
+              <div class="col source">
+                <span class="badge source-badge">{{ emission.source }}</span>
+              </div>
+              <div class="col other1">
+                <span class="badge other1-badge">{{ emission.other1 }}</span>
+              </div>
+              <div class="col other2">
+                <span class="badge other2-badge">{{ emission.other2 }}</span>
+              </div>
+              <div class="col combined">
+                <code>{{ emission.combined }}</code>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>Key Concepts</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>🎯 Source Driven</h4>
+        <p>Only emits when the source Observable emits</p>
+      </div>
+      <div class="concept-card">
+        <h4>📸 Latest Values</h4>
+        <p>Takes the most recent values from other Observables</p>
+      </div>
+      <div class="concept-card">
+        <h4>⏳ Waits for All</h4>
+        <p>Won't emit until all Observables have emitted at least once</p>
+      </div>
+      <div class="concept-card">
+        <h4>🔄 No Replay</h4>
+        <p>Doesn't replay past values, only uses current latest</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Common Use Cases</h2>
+    <ul class="use-cases">
+      <li><strong>Form Submission:</strong> Combine button click with latest form values</li>
+      <li><strong>User Context:</strong> Combine actions with current user state</li>
+      <li><strong>Settings:</strong> Apply latest configuration to operations</li>
+      <li><strong>Filters:</strong> Combine data requests with current filter settings</li>
+    </ul>
+  </section>
+
+  <section class="section info">
+    <h2>💡 withLatestFrom vs combineLatest</h2>
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h4>withLatestFrom</h4>
+        <ul>
+          <li>✓ Emits only when source emits</li>
+          <li>✓ Source controls timing</li>
+          <li>✓ Good for triggered actions</li>
+          <li>✓ Less frequent emissions</li>
+        </ul>
+      </div>
+      <div class="comparison-card">
+        <h4>combineLatest</h4>
+        <ul>
+          <li>✓ Emits when any Observable emits</li>
+          <li>✓ All Observables equal</li>
+          <li>✓ Good for reactive state</li>
+          <li>✓ More frequent emissions</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/combination/combinelatest" class="operator-link">
+        <span class="icon">🔗</span>
+        <span class="name">combineLatest</span>
+      </a>
+      <a routerLink="/combination/zip" class="operator-link">
+        <span class="icon">🤐</span>
+        <span class="name">zip</span>
+      </a>
+      <a routerLink="/combination/merge" class="operator-link">
+        <span class="icon">🔀</span>
+        <span class="name">merge</span>
+      </a>
+    </div>
+  </section>
+</div>

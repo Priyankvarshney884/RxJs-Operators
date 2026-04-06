@@ -1,0 +1,159 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>⏱️ timeout Operator</h1>
+    <span class="difficulty intermediate">🟡 Intermediate</span>
+  </div>
+
+  <section class="section">
+    <h2>What is timeout?</h2>
+    <p class="description">
+      The <code>timeout</code> operator errors if the Observable does not emit a value within a specified 
+      time period. It's essential for handling slow or unresponsive operations, ensuring your application 
+      doesn't wait indefinitely for data.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>Timeout duration (ms):</label>
+        <input type="number" [(ngModel)]="timeoutDuration" [disabled]="loading()" min="500" max="5000" step="100">
+      </div>
+      <div class="control-group">
+        <label>Emission delay (ms):</label>
+        <input type="number" [(ngModel)]="emissionDelay" [disabled]="loading()" min="500" max="5000" step="100">
+      </div>
+      <div class="scenario-info">
+        @if (emissionDelay() > timeoutDuration()) {
+          <span class="badge timeout-badge">⏱️ Will Timeout</span>
+          <span class="info-text">Emission ({{ emissionDelay() }}ms) > Timeout ({{ timeoutDuration() }}ms)</span>
+        } @else {
+          <span class="badge success-badge">✅ Will Succeed</span>
+          <span class="info-text">Emission ({{ emissionDelay() }}ms) < Timeout ({{ timeoutDuration() }}ms)</span>
+        }
+      </div>
+      <button class="btn btn-primary" (click)="runExample()" [disabled]="loading()">
+        {{ loading() ? '⏳ Running...' : '▶️ Run Example' }}
+      </button>
+      <button class="btn btn-secondary" (click)="clearResults()">🗑️ Clear</button>
+    </div>
+
+    @if (loading() && countdown() > 0) {
+      <div class="countdown-panel">
+        <h3>⏱️ Timeout Countdown</h3>
+        <div class="countdown-display">{{ countdown() }}ms</div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="(countdown() / timeoutDuration()) * 100"></div>
+        </div>
+      </div>
+    }
+
+    @if (results().length > 0) {
+      <div class="results-panel">
+        <h3>📊 Results</h3>
+        @for (result of results(); track $index) {
+          <div class="result-item" [class]="getStatusClass(result.status)">
+            <div class="result-icon">
+              @if (result.status === 'success') { ✅ }
+              @if (result.status === 'timeout') { ⏱️ }
+              @if (result.status === 'error') { ❌ }
+            </div>
+            <div class="result-content">
+              <div class="result-message">{{ result.message }}</div>
+              <div class="result-time">Time: {{ result.time }}ms</div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>Key Concepts</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>⏰ Time Limit</h4>
+        <p>Sets maximum wait time for emissions</p>
+      </div>
+      <div class="concept-card">
+        <h4>❌ Error on Timeout</h4>
+        <p>Throws TimeoutError if time exceeded</p>
+      </div>
+      <div class="concept-card">
+        <h4>🔄 Fallback Option</h4>
+        <p>Can switch to fallback Observable instead of erroring</p>
+      </div>
+      <div class="concept-card">
+        <h4>🎯 Per Emission</h4>
+        <p>Can apply timeout to each emission or first only</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Common Use Cases</h2>
+    <ul class="use-cases">
+      <li><strong>API Requests:</strong> Prevent hanging on slow network requests</li>
+      <li><strong>User Actions:</strong> Timeout waiting for user input</li>
+      <li><strong>Real-time Data:</strong> Detect disconnected streams</li>
+      <li><strong>Performance:</strong> Ensure operations complete within SLA</li>
+    </ul>
+  </section>
+
+  <section class="section warning">
+    <h2>⚠️ Important Notes</h2>
+    <ul class="warning-list">
+      <li><strong>Error Handling:</strong> Always use catchError to handle TimeoutError gracefully</li>
+      <li><strong>Timing:</strong> Consider network latency and processing time when setting timeout</li>
+      <li><strong>User Experience:</strong> Provide feedback when timeout occurs</li>
+      <li><strong>Retry Strategy:</strong> Often combined with retry operators for resilience</li>
+    </ul>
+  </section>
+
+  <section class="section info">
+    <h2>💡 Timeout Strategies</h2>
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <h4>First Emission</h4>
+        <p>Timeout only for the first value</p>
+        <code>timeout(5000)</code>
+      </div>
+      <div class="strategy-card">
+        <h4>Each Emission</h4>
+        <p>Timeout between each emission</p>
+        <code>timeout({{ '{' }} each: 5000 {{ '}' }})</code>
+      </div>
+      <div class="strategy-card">
+        <h4>With Fallback</h4>
+        <p>Switch to fallback on timeout</p>
+        <code>timeout({{ '{' }} each: 5000, with: () => of('fallback') {{ '}' }})</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/utility/delay" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">delay</span>
+      </a>
+      <a routerLink="/error-handling/retry" class="operator-link">
+        <span class="icon">🔄</span>
+        <span class="name">retry</span>
+      </a>
+      <a routerLink="/error-handling/catcherror" class="operator-link">
+        <span class="icon">🛡️</span>
+        <span class="name">catchError</span>
+      </a>
+    </div>
+  </section>
+</div>

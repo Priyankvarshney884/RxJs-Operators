@@ -1,0 +1,276 @@
+@use '../../filtering/filter-example/filter-example.component.scss';
+
+.difficulty.beginner {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.demo-intro {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.interactive-demos {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.demo-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  border-radius: 8px;
+
+  h3 {
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.demo-button {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.hover-area {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: crosshair;
+
+  .position-display {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #1f2937;
+    font-family: 'Courier New', monospace;
+    z-index: 10;
+  }
+
+  .crosshair {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      background: white;
+    }
+
+    &::before {
+      width: 2px;
+      height: 20px;
+      left: 9px;
+      top: 0;
+    }
+
+    &::after {
+      width: 20px;
+      height: 2px;
+      left: 0;
+      top: 9px;
+    }
+  }
+}
+
+.demo-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+}
+
+.input-result {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  color: #1e40af;
+
+  strong {
+    color: #1e3a8a;
+  }
+}
+
+.logs-panel {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+
+  h3 {
+    color: #1f2937;
+    margin-bottom: 1rem;
+  }
+}
+
+.logs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  display: grid;
+  grid-template-columns: 80px 120px 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  border-left: 3px solid #e5e7eb;
+  font-size: 0.9rem;
+  align-items: center;
+
+  &.click {
+    border-left-color: #667eea;
+    background: #eff6ff;
+  }
+
+  &.mousemove {
+    border-left-color: #10b981;
+    background: #f0fdf4;
+  }
+
+  &.input {
+    border-left-color: #f59e0b;
+    background: #fffbeb;
+  }
+
+  .log-time {
+    color: #6b7280;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+  }
+
+  .log-type {
+    font-weight: 600;
+    color: #1f2937;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  .log-data {
+    color: #4b5563;
+  }
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.concept-card {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  h4 {
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.use-cases {
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: 0.75rem 0;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      color: #1f2937;
+    }
+  }
+}
+
+.section.info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.tip-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+
+  h4 {
+    color: #1e40af;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #4b5563;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+// Made with Bob

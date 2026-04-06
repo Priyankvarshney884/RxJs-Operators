@@ -1,0 +1,151 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>🖱️ fromEvent Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is fromEvent?</h2>
+    <p class="description">
+      The <code>fromEvent</code> operator creates an Observable from DOM events. It's the bridge between 
+      traditional event listeners and reactive programming, allowing you to treat user interactions 
+      as Observable streams that can be transformed, filtered, and combined.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-intro">Interact with the elements below to see fromEvent in action!</p>
+
+    <div class="interactive-demos">
+      <!-- Click Demo -->
+      <div class="demo-card">
+        <h3>🖱️ Click Events</h3>
+        <p>Click the button to emit events</p>
+        <button #clickButton class="demo-button">
+          Click Me! ({{ clickCount() }} clicks)
+        </button>
+      </div>
+
+      <!-- Mouse Move Demo -->
+      <div class="demo-card">
+        <h3>📍 Mouse Move Events (Throttled)</h3>
+        <p>Move your mouse over the area below</p>
+        <div #hoverArea class="hover-area">
+          <div class="position-display">
+            X: {{ mousePosition().x }}px, Y: {{ mousePosition().y }}px
+          </div>
+          <div class="crosshair" 
+               [style.left.px]="mousePosition().x" 
+               [style.top.px]="mousePosition().y">
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Demo -->
+      <div class="demo-card">
+        <h3>⌨️ Input Events (Debounced)</h3>
+        <p>Type to see debounced input (300ms delay)</p>
+        <input #inputField type="text" class="demo-input" placeholder="Type something...">
+        @if (inputValue()) {
+          <div class="input-result">
+            Debounced value: <strong>{{ inputValue() }}</strong>
+          </div>
+        }
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" (click)="clearLogs()">🗑️ Clear All</button>
+
+    @if (eventLogs().length > 0) {
+      <div class="logs-panel">
+        <h3>📋 Event Logs (Last 10)</h3>
+        <div class="logs-container">
+          @for (log of eventLogs(); track $index) {
+            <div class="log-entry" [class]="log.type">
+              <span class="log-time">{{ log.time }}ms</span>
+              <span class="log-type">{{ log.type }}</span>
+              <span class="log-data">{{ log.data }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>Key Concepts</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>🎯 Event Target</h4>
+        <p>Works with any EventTarget (DOM elements, window, document)</p>
+      </div>
+      <div class="concept-card">
+        <h4>🔄 Automatic Cleanup</h4>
+        <p>Removes event listeners when unsubscribed</p>
+      </div>
+      <div class="concept-card">
+        <h4>🎨 Composable</h4>
+        <p>Combine with operators like debounce, throttle, map</p>
+      </div>
+      <div class="concept-card">
+        <h4>📦 Type Safe</h4>
+        <p>Full TypeScript support for event types</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Common Use Cases</h2>
+    <ul class="use-cases">
+      <li><strong>User Input:</strong> Search boxes, form fields with debouncing</li>
+      <li><strong>Mouse Tracking:</strong> Drag and drop, drawing applications</li>
+      <li><strong>Keyboard Shortcuts:</strong> Hotkey combinations and commands</li>
+      <li><strong>Scroll Events:</strong> Infinite scroll, parallax effects</li>
+      <li><strong>Window Events:</strong> Resize, focus, visibility changes</li>
+    </ul>
+  </section>
+
+  <section class="section info">
+    <h2>💡 Best Practices</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>Use Throttle/Debounce</h4>
+        <p>High-frequency events (mousemove, scroll) should be throttled or debounced to prevent performance issues</p>
+      </div>
+      <div class="tip-card">
+        <h4>Unsubscribe Properly</h4>
+        <p>Always unsubscribe in ngOnDestroy to prevent memory leaks</p>
+      </div>
+      <div class="tip-card">
+        <h4>Type Your Events</h4>
+        <p>Use TypeScript generics: <code>fromEvent&lt;MouseEvent&gt;(element, 'click')</code></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/creation/from" class="operator-link">
+        <span class="icon">📦</span>
+        <span class="name">from</span>
+      </a>
+      <a routerLink="/creation/interval" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">interval</span>
+      </a>
+      <a routerLink="/filtering/debouncetime" class="operator-link">
+        <span class="icon">⏳</span>
+        <span class="name">debounceTime</span>
+      </a>
+    </div>
+  </section>
+</div>

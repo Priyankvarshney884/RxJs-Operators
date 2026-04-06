@@ -1,0 +1,192 @@
+@use '../../filtering/filter-example/filter-example.component.scss';
+
+.difficulty.intermediate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.result-panel {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+
+  h3 {
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-text {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.emissions-table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+
+  .table-header,
+  .table-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr 1fr 1.5fr;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+  }
+
+  .table-header {
+    background: #f3f4f6;
+    font-weight: 700;
+    color: #1f2937;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .table-row {
+    border-bottom: 1px solid #f3f4f6;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: #f9fafb;
+    }
+  }
+
+  .col {
+    &.time {
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    &.combined {
+      code {
+        background: #1f2937;
+        color: #10b981;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .source-badge {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .other1-badge {
+    background: #fce7f3;
+    color: #9f1239;
+  }
+
+  .other2-badge {
+    background: #e0e7ff;
+    color: #3730a3;
+  }
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.concept-card {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  h4 {
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.use-cases {
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: 0.75rem 0;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      color: #1f2937;
+    }
+  }
+}
+
+.section.info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.comparison-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+
+  h4 {
+    color: #1e40af;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0.5rem 0;
+      color: #4b5563;
+      font-size: 0.9rem;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        background: #3b82f6;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+// Made with Bob
