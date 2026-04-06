@@ -91,6 +91,46 @@ export const routes: Routes = [
     loadComponent: () => import('./features/utility/finalize-example/finalize-example.component').then(m => m.FinalizeExampleComponent)
   },
   {
+    path: 'error-handling/catcherror',
+    loadComponent: () => import('./features/error-handling/catcherror-example/catcherror-example.component').then(m => m.CatchErrorExampleComponent)
+  },
+  {
+    path: 'error-handling/retry',
+    loadComponent: () => import('./features/error-handling/retry-example/retry-example.component').then(m => m.RetryExampleComponent)
+  },
+  {
+    path: 'error-handling/retrywhen',
+    loadComponent: () => import('./features/error-handling/retrywhen-example/retrywhen-example.component').then(m => m.RetryWhenExampleComponent)
+  },
+  {
+    path: 'utility/tap',
+    loadComponent: () => import('./features/utility/tap-example/tap-example.component').then(m => m.TapExampleComponent)
+  },
+  {
+    path: 'utility/delay',
+    loadComponent: () => import('./features/utility/delay-example/delay-example.component').then(m => m.DelayExampleComponent)
+  },
+  {
+    path: 'utility/finalize',
+    loadComponent: () => import('./features/utility/finalize-example/finalize-example.component').then(m => m.FinalizeExampleComponent)
+  },
+  {
+    path: 'creation/of',
+    loadComponent: () => import('./features/creation/of-example/of-example.component').then(m => m.OfExampleComponent)
+  },
+  {
+    path: 'creation/from',
+    loadComponent: () => import('./features/creation/from-example/from-example.component').then(m => m.FromExampleComponent)
+  },
+  {
+    path: 'creation/interval',
+    loadComponent: () => import('./features/creation/interval-example/interval-example.component').then(m => m.IntervalExampleComponent)
+  },
+  {
+    path: 'creation/timer',
+    loadComponent: () => import('./features/creation/timer-example/timer-example.component').then(m => m.TimerExampleComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

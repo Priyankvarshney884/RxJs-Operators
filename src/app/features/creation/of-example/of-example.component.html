@@ -1,0 +1,216 @@
+<div class="operator-example">
+  <div class="example-header">
+    <h1>✨ of Operator</h1>
+    <span class="difficulty beginner">🟢 Beginner</span>
+  </div>
+
+  <section class="section">
+    <h2>What is of?</h2>
+    <p class="description">
+      The <code>of</code> operator creates an Observable that emits a sequence of values you provide 
+      as arguments, then completes. It's the simplest way to create an Observable from known values 
+      and is perfect for testing or providing static data.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>When to Use</h2>
+    <ul class="use-cases">
+      <li>✅ Create Observables from static values</li>
+      <li>✅ Testing and mocking data</li>
+      <li>✅ Provide default or fallback values</li>
+      <li>✅ Emit multiple values synchronously</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Code Example</h2>
+    <div class="code-block">
+      <pre><code>{{ codeExample }}</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Try It Yourself</h2>
+    <p class="demo-instruction">Create Observables with different types of values using the of operator.</p>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label for="valueType">Value Type:</label>
+        <select id="valueType" [(ngModel)]="selectedType" [disabled]="loading()">
+          <option value="numbers">Numbers (1, 2, 3, 4, 5)</option>
+          <option value="strings">Strings ('A', 'B', 'C')</option>
+          <option value="objects">Objects (User data)</option>
+          <option value="mixed">Mixed Types</option>
+        </select>
+      </div>
+      
+      <button 
+        class="btn btn-primary" 
+        (click)="runExample()"
+        [disabled]="loading()">
+        {{ loading() ? '⏳ Emitting...' : '▶️ Create Observable' }}
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="clearResults()"
+        [disabled]="loading()">
+        🗑️ Clear
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Emitting values synchronously...</p>
+      </div>
+    }
+
+    @if (emissions().length > 0) {
+      <div class="emissions-panel">
+        <h3>📡 Emissions Timeline</h3>
+        <p class="emissions-description">Values emitted by the of operator:</p>
+        <div class="emissions-list">
+          @for (emission of emissions(); track emission.index) {
+            <div class="emission-item" [style.animation-delay.ms]="emission.index * 100">
+              <div class="emission-badge">{{ emission.index + 1 }}</div>
+              <div class="emission-content">
+                <span class="emission-time">{{ emission.time }}ms</span>
+                <div class="emission-value">
+                  <strong>Value:</strong>
+                  <pre>{{ emission.value | json }}</pre>
+                </div>
+              </div>
+            </div>
+          }
+          @if (completed()) {
+            <div class="emission-item complete" [style.animation-delay.ms]="emissions().length * 100">
+              <div class="emission-badge complete">✓</div>
+              <div class="emission-content">
+                <span class="emission-time">{{ completionTime() }}ms</span>
+                <div class="emission-value">
+                  <strong>Observable Completed</strong>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (result()) {
+      <div class="result-panel">
+        <h3>✅ All Values Collected</h3>
+        <div class="result-stats">
+          <span class="stat">
+            <strong>Total Time:</strong> {{ executionTime() }}ms
+          </span>
+          <span class="stat">
+            <strong>Emissions:</strong> {{ emissions().length }}
+          </span>
+          <span class="stat">
+            <strong>Type:</strong> {{ selectedType }}
+          </span>
+        </div>
+        <div class="result-content">
+          <pre>{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="section">
+    <h2>How It Works</h2>
+    <div class="explanation">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Create Observable</h4>
+          <p>of() creates an Observable with the provided values</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Emit Values</h4>
+          <p>Each value is emitted synchronously in sequence</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Complete</h4>
+          <p>After all values are emitted, the Observable completes</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Real-World Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h4>🧪 Testing</h4>
+        <p>Mock data for unit tests</p>
+        <code>of(mockUser, mockProduct)</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🔄 Default Values</h4>
+        <p>Provide fallback data</p>
+        <code>catchError(() => of(defaultValue))</code>
+      </div>
+      <div class="use-case-card">
+        <h4>📋 Static Lists</h4>
+        <p>Create dropdown options</p>
+        <code>of('Option 1', 'Option 2', 'Option 3')</code>
+      </div>
+      <div class="use-case-card">
+        <h4>🎯 Initial State</h4>
+        <p>Set initial application state</p>
+        <code>of(initialState).pipe(tap(setState))</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section info">
+    <h2>💡 Key Characteristics</h2>
+    <ul class="characteristics-list">
+      <li><strong>Synchronous:</strong> All values are emitted immediately</li>
+      <li><strong>Completes automatically:</strong> No need to manually complete</li>
+      <li><strong>Multiple values:</strong> Can emit any number of values</li>
+      <li><strong>Any type:</strong> Works with primitives, objects, arrays, etc.</li>
+    </ul>
+  </section>
+
+  <section class="section success">
+    <h2>✅ Best Practices</h2>
+    <ul class="best-practices">
+      <li>Use for known, static values</li>
+      <li>Perfect for testing and mocking</li>
+      <li>Combine with operators for complex flows</li>
+      <li>Use as fallback in error handling</li>
+      <li>Great for providing default configurations</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related Operators</h2>
+    <div class="related-operators">
+      <a routerLink="/creation/from" class="operator-link">
+        <span class="icon">✨</span>
+        <span class="name">from</span>
+        <span class="desc">Convert arrays/promises to Observable</span>
+      </a>
+      <a routerLink="/creation/interval" class="operator-link">
+        <span class="icon">⏱️</span>
+        <span class="name">interval</span>
+        <span class="desc">Emit values at intervals</span>
+      </a>
+      <a routerLink="/creation/timer" class="operator-link">
+        <span class="icon">⏰</span>
+        <span class="name">timer</span>
+        <span class="desc">Emit after delay</span>
+      </a>
+    </div>
+  </section>
+</div>
