@@ -1,0 +1,333 @@
+<div class="operator-example">
+  <div class="operator-header">
+    <h1>AsyncSubject</h1>
+    <div class="badge-container">
+      <span class="badge badge-subjects">Subjects</span>
+      <span class="badge badge-advanced">Advanced</span>
+    </div>
+  </div>
+
+  <div class="operator-description">
+    <p>
+      An <strong>AsyncSubject</strong> is a variant of Subject that only emits the last value
+      of the Observable execution, and only when the execution completes. If the Observable
+      errors, no value is emitted.
+    </p>
+    <ul>
+      <li>Only emits the last value upon completion</li>
+      <li>All subscribers receive the same last value</li>
+      <li>Late subscribers also receive the last value</li>
+      <li>Perfect for operations that produce a single final result</li>
+    </ul>
+  </div>
+
+  <!-- Interactive Demo -->
+  <div class="demo-section">
+    <h2>Interactive Demo</h2>
+    
+    <div class="status-display">
+      <div class="status-card">
+        <h3>Emitted Values</h3>
+        <div class="values-list">
+          @if (emittedValues().length === 0) {
+            <div class="empty-state-small">No values emitted yet</div>
+          } @else {
+            @for (value of emittedValues(); track value; let last = $last) {
+              <div class="value-item" [class.last-value]="last">
+                {{ value }}
+                @if (last) {
+                  <span class="last-badge">LAST</span>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="status-card highlight">
+        <h3>Value to be Emitted on Complete</h3>
+        <div class="final-value">
+          @if (lastValue()) {
+            <div class="value-box">{{ lastValue() }}</div>
+            <p class="value-note">This value will be sent to all subscribers when completed</p>
+          } @else {
+            <div class="empty-state-small">No value yet - emit some values first</div>
+          }
+        </div>
+      </div>
+
+      <div class="status-card">
+        <h3>Completion Status</h3>
+        <div class="completion-status">
+          @if (isCompleted()) {
+            <div class="status-badge completed">✅ COMPLETED</div>
+            <p class="status-note">Last value has been sent to all subscribers</p>
+          } @else if (isRunning()) {
+            <div class="status-badge running">⏳ RUNNING</div>
+            <p class="status-note">Waiting for completion to emit value</p>
+          } @else {
+            <div class="status-badge inactive">⚪ INACTIVE</div>
+            <p class="status-note">Start the AsyncSubject to begin</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <h3>AsyncSubject Controls</h3>
+        <button (click)="startExample()" [disabled]="isRunning()" class="btn btn-primary">
+          Start AsyncSubject
+        </button>
+        <button (click)="emitValue()" [disabled]="!isRunning() || isCompleted()" class="btn btn-success">
+          Emit Value
+        </button>
+        <button (click)="complete()" [disabled]="!isRunning() || isCompleted()" class="btn btn-complete">
+          Complete (Emit Last Value)
+        </button>
+        <button (click)="emitError()" [disabled]="!isRunning() || isCompleted()" class="btn btn-danger">
+          Emit Error
+        </button>
+        <button (click)="resetExample()" class="btn btn-secondary">
+          Reset
+        </button>
+      </div>
+
+      <div class="control-group">
+        <h3>Subscriber Controls</h3>
+        <button 
+          (click)="subscribe1()" 
+          [disabled]="!isRunning() || subscriber1Active()" 
+          class="btn btn-subscriber-1">
+          Subscribe 1
+        </button>
+        <button 
+          (click)="subscribe2()" 
+          [disabled]="!isRunning() || subscriber2Active()" 
+          class="btn btn-subscriber-2">
+          Subscribe 2
+        </button>
+        <button 
+          (click)="subscribe3()" 
+          [disabled]="!isRunning() || subscriber3Active()" 
+          class="btn btn-subscriber-3">
+          Subscribe 3
+        </button>
+      </div>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-label">AsyncSubject Status:</span>
+        <span class="status-value" [class.active]="isRunning()" [class.completed]="isCompleted()">
+          {{ isCompleted() ? 'Completed' : (isRunning() ? 'Active' : 'Inactive') }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Active Subscribers:</span>
+        <span class="status-value">
+          {{ (subscriber1Active() ? 1 : 0) + (subscriber2Active() ? 1 : 0) + (subscriber3Active() ? 1 : 0) }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Values Emitted:</span>
+        <span class="status-value">{{ emittedValues().length }}</span>
+      </div>
+    </div>
+
+    <div class="message-log">
+      <h3>Message Log</h3>
+      <div class="log-container">
+        @if (messages().length === 0) {
+          <div class="empty-state">
+            Click "Start AsyncSubject", emit some values, then click "Complete" to see the last value sent to all subscribers!
+          </div>
+        }
+        @for (message of messages(); track message.id) {
+          <div class="log-entry" [ngClass]="getSubscriberClass(message.subscriberId)">
+            <span class="log-time">{{ message.timestamp.toLocaleTimeString() }}</span>
+            <span class="log-subscriber">{{ message.subscriberId }}:</span>
+            <span class="log-value">{{ message.value }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <div class="code-section">
+    <h2>Code Example</h2>
+    <pre><code>{{ codeExample }}</code></pre>
+  </div>
+
+  <!-- Key Characteristics -->
+  <div class="info-section">
+    <h2>Key Characteristics</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🎯 Last Value Only</h3>
+        <p>Only the last emitted value is sent to subscribers, and only upon completion.</p>
+      </div>
+      <div class="info-card">
+        <h3>⏰ Waits for Completion</h3>
+        <p>No values are emitted until the AsyncSubject completes.</p>
+      </div>
+      <div class="info-card">
+        <h3>🔄 Late Subscribers</h3>
+        <p>Even late subscribers receive the last value after completion.</p>
+      </div>
+      <div class="info-card">
+        <h3>❌ Error Handling</h3>
+        <p>If an error occurs, no value is emitted at all.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h2>Common Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h3>API Call Result</h3>
+        <p>Wait for API call to complete and share the final result</p>
+        <pre><code>{{ useCaseApiCall }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Long Computation</h3>
+        <p>Share the final result of a long-running calculation</p>
+        <pre><code>{{ useCaseComputation }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Task Completion</h3>
+        <p>Emit only the final result after all steps complete</p>
+        <pre><code>{{ useCaseFinalResult }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison-section">
+    <h2>Subject Comparison</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Subject</th>
+          <th>BehaviorSubject</th>
+          <th>ReplaySubject</th>
+          <th>AsyncSubject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Emission Timing</td>
+          <td>Immediate</td>
+          <td>Immediate</td>
+          <td>Immediate</td>
+          <td>On completion</td>
+        </tr>
+        <tr>
+          <td>Values Emitted</td>
+          <td>All</td>
+          <td>Current + All new</td>
+          <td>Last N + All new</td>
+          <td>Last only</td>
+        </tr>
+        <tr>
+          <td>Late Subscribers</td>
+          <td>Only new values</td>
+          <td>Current value</td>
+          <td>Last N values</td>
+          <td>Last value</td>
+        </tr>
+        <tr>
+          <td>Requires Completion</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Best For</td>
+          <td>Event streams</td>
+          <td>State</td>
+          <td>History</td>
+          <td>Final results</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="info-section">
+    <h2>Best Practices</h2>
+    <div class="best-practices-grid">
+      <div class="practice-card">
+        <h3>✅ Do</h3>
+        <ul>
+          <li>Use for operations that produce a single final result</li>
+          <li>Use for async operations like HTTP requests</li>
+          <li>Use when only the final outcome matters</li>
+          <li>Always call <code>complete()</code> to emit the value</li>
+          <li>Handle errors appropriately (no value on error)</li>
+        </ul>
+      </div>
+      <div class="practice-card warning">
+        <h3>❌ Don't</h3>
+        <ul>
+          <li>Use for continuous streams of data</li>
+          <li>Use when intermediate values are needed</li>
+          <li>Forget to complete (value won't be emitted)</li>
+          <li>Use for real-time updates or state management</li>
+          <li>Expect values before completion</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison with Promise -->
+  <div class="info-section">
+    <h2>AsyncSubject vs Promise</h2>
+    <div class="comparison-cards">
+      <div class="comparison-card">
+        <h3>AsyncSubject</h3>
+        <ul>
+          <li>✅ Can be cancelled (unsubscribe)</li>
+          <li>✅ Multiple subscribers</li>
+          <li>✅ Lazy (doesn't execute until subscribed)</li>
+          <li>✅ Can be retried</li>
+          <li>✅ Part of RxJS ecosystem</li>
+        </ul>
+      </div>
+      <div class="comparison-card">
+        <h3>Promise</h3>
+        <ul>
+          <li>❌ Cannot be cancelled</li>
+          <li>❌ Single consumer (then)</li>
+          <li>❌ Eager (executes immediately)</li>
+          <li>❌ Cannot be retried natively</li>
+          <li>✅ Native JavaScript</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Operators -->
+  <div class="related-section">
+    <h2>Related Subjects</h2>
+    <div class="related-grid">
+      <a routerLink="/subjects/subject" class="related-card">
+        <h3>Subject</h3>
+        <p>Basic Subject that emits all values immediately</p>
+      </a>
+      <a routerLink="/subjects/behaviorsubject" class="related-card">
+        <h3>BehaviorSubject</h3>
+        <p>Subject with initial value and current value replay</p>
+      </a>
+      <a routerLink="/subjects/replaysubject" class="related-card">
+        <h3>ReplaySubject</h3>
+        <p>Subject that replays specified number of values</p>
+      </a>
+    </div>
+  </div>
+</div>

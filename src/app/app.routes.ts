@@ -127,6 +127,26 @@ export const routes: Routes = [
     loadComponent: () => import('./features/creation/fromevent-example/fromevent-example.component').then(m => m.FromEventExampleComponent)
   },
   {
+    path: 'subjects/subject',
+    loadComponent: () => import('./features/subjects/subject-example/subject-example.component').then(m => m.SubjectExampleComponent)
+  },
+  {
+    path: 'subjects/behaviorsubject',
+    loadComponent: () => import('./features/subjects/behaviorsubject-example/behaviorsubject-example.component').then(m => m.BehaviorsubjectExampleComponent)
+  },
+  {
+    path: 'subjects/replaysubject',
+    loadComponent: () => import('./features/subjects/replaysubject-example/replaysubject-example.component').then(m => m.ReplaysubjectExampleComponent)
+  },
+  {
+    path: 'subjects/asyncsubject',
+    loadComponent: () => import('./features/subjects/asyncsubject-example/asyncsubject-example.component').then(m => m.AsyncsubjectExampleComponent)
+  },
+  {
+    path: 'subjects/voidsubject',
+    loadComponent: () => import('./features/subjects/voidsubject-example/voidsubject-example.component').then(m => m.VoidsubjectExampleComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

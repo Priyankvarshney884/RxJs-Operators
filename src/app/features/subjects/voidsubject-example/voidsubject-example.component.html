@@ -1,0 +1,187 @@
+<div class="operator-example">
+  <div class="operator-header">
+    <h1>VoidSubject</h1>
+    <div class="badge-container">
+      <span class="badge badge-subjects">Subjects</span>
+      <span class="badge badge-beginner">Beginner</span>
+    </div>
+  </div>
+
+  <div class="operator-description">
+    <p>
+      A <strong>VoidSubject</strong> (Subject with void type) is a specialized Subject that emits notifications
+      without any associated value. It's perfect for signaling events where the occurrence matters,
+      but no data needs to be transmitted.
+    </p>
+    <ul>
+      <li>Emits notifications without values</li>
+      <li>Perfect for event signaling (clicks, refreshes, etc.)</li>
+      <li>Lightweight - no data to store or transmit</li>
+      <li>Clear intent - signals "something happened" not "here's data"</li>
+    </ul>
+  </div>
+
+  <!-- Interactive Demo -->
+  <div class="demo-section">
+    <h2>Interactive Demo</h2>
+    
+    <div class="notification-display">
+      <h3>Notification Counter</h3>
+      <div class="counter-box">
+        <div class="counter-value">{{ notificationCount() }}</div>
+        <div class="counter-label">Notifications Emitted</div>
+      </div>
+      <p class="counter-note">Each notification triggers all active subscribers</p>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <h3>VoidSubject Controls</h3>
+        <button (click)="startExample()" [disabled]="isRunning()" class="btn btn-primary">
+          Start VoidSubject
+        </button>
+        <button (click)="emitNotification()" [disabled]="!isRunning()" class="btn btn-notify">
+          Emit Notification
+        </button>
+        <button (click)="emitError()" [disabled]="!isRunning()" class="btn btn-danger">
+          Emit Error
+        </button>
+        <button (click)="complete()" [disabled]="!isRunning()" class="btn btn-warning">
+          Complete
+        </button>
+        <button (click)="resetExample()" class="btn btn-secondary">
+          Reset
+        </button>
+      </div>
+
+      <div class="control-group">
+        <h3>Subscriber Controls</h3>
+        <button 
+          (click)="subscribe1()" 
+          [disabled]="!isRunning() || subscriber1Active()" 
+          class="btn btn-subscriber-1">
+          Subscribe 1
+        </button>
+        <button 
+          (click)="subscribe2()" 
+          [disabled]="!isRunning() || subscriber2Active()" 
+          class="btn btn-subscriber-2">
+          Subscribe 2
+        </button>
+        <button 
+          (click)="subscribe3()" 
+          [disabled]="!isRunning() || subscriber3Active()" 
+          class="btn btn-subscriber-3">
+          Subscribe 3
+        </button>
+      </div>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-label">Subject Status:</span>
+        <span class="status-value" [class.active]="isRunning()">
+          {{ isRunning() ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Active Subscribers:</span>
+        <span class="status-value">
+          {{ (subscriber1Active() ? 1 : 0) + (subscriber2Active() ? 1 : 0) + (subscriber3Active() ? 1 : 0) }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Total Notifications:</span>
+        <span class="status-value">{{ notificationCount() }}</span>
+      </div>
+    </div>
+
+    <div class="message-log">
+      <h3>Message Log</h3>
+      <div class="log-container">
+        @if (messages().length === 0) {
+          <div class="empty-state">
+            Click "Start VoidSubject" to begin. Add subscribers and emit notifications to see them in action!
+          </div>
+        }
+        @for (message of messages(); track message.id) {
+          <div class="log-entry" [ngClass]="getSubscriberClass(message.subscriberId)">
+            <span class="log-time">{{ message.timestamp.toLocaleTimeString() }}</span>
+            <span class="log-subscriber">{{ message.subscriberId }}:</span>
+            <span class="log-value">{{ message.value }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <div class="code-section">
+    <h2>Code Example</h2>
+    <pre><code>{{ codeExample }}</code></pre>
+  </div>
+
+  <!-- Key Characteristics -->
+  <div class="info-section">
+    <h2>Key Characteristics</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🔔 Event Notification</h3>
+        <p>Signals that an event occurred without transmitting any data.</p>
+      </div>
+      <div class="info-card">
+        <h3>⚡ Lightweight</h3>
+        <p>No data to store, serialize, or transmit - just pure event signaling.</p>
+      </div>
+      <div class="info-card">
+        <h3>🎯 Clear Intent</h3>
+        <p>Type signature makes it clear no value is expected or provided.</p>
+      </div>
+      <div class="info-card">
+        <h3>🔄 Multicast</h3>
+        <p>All subscribers are notified simultaneously when event occurs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h2>Common Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h3>Button Click Events</h3>
+        <p>Signal button clicks across components without passing data</p>
+        <pre><code>{{ useCaseButtonClick }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Refresh Trigger</h3>
+        <p>Trigger data refresh across multiple components</p>
+        <pre><code>{{ useCaseRefresh }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Modal Close Event</h3>
+        <p>Notify components when modal closes</p>
+        <pre><code>{{ useCaseModalClose }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Operators -->
+  <div class="related-section">
+    <h2>Related Subjects</h2>
+    <div class="related-grid">
+      <a routerLink="/subjects/subject" class="related-card">
+        <h3>Subject</h3>
+        <p>Basic Subject for emitting values to multiple subscribers</p>
+      </a>
+      <a routerLink="/subjects/behaviorsubject" class="related-card">
+        <h3>BehaviorSubject</h3>
+        <p>Subject with initial value and current value replay</p>
+      </a>
+      <a routerLink="/subjects/replaysubject" class="related-card">
+        <h3>ReplaySubject</h3>
+        <p>Subject that replays specified number of values</p>
+      </a>
+    </div>
+  </div>
+</div>

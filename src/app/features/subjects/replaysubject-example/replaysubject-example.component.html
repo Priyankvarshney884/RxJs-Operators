@@ -1,0 +1,309 @@
+<div class="operator-example">
+  <div class="operator-header">
+    <h1>ReplaySubject</h1>
+    <div class="badge-container">
+      <span class="badge badge-subjects">Subjects</span>
+      <span class="badge badge-advanced">Advanced</span>
+    </div>
+  </div>
+
+  <div class="operator-description">
+    <p>
+      A <strong>ReplaySubject</strong> records multiple values from the Observable execution and
+      replays them to new subscribers. You can specify how many values to replay and optionally
+      a time window for the replay.
+    </p>
+    <ul>
+      <li>Replays a specified number of values to new subscribers</li>
+      <li>Can optionally specify a time window for replay</li>
+      <li>Useful for caching and replaying historical data</li>
+      <li>Perfect for scenarios where late subscribers need past values</li>
+    </ul>
+  </div>
+
+  <!-- Interactive Demo -->
+  <div class="demo-section">
+    <h2>Interactive Demo</h2>
+    
+    <div class="buffer-config">
+      <h3>Buffer Configuration</h3>
+      <div class="buffer-controls">
+        <label>Buffer Size: {{ bufferSize() }}</label>
+        <div class="buffer-buttons">
+          <button 
+            (click)="changeBufferSize(1)" 
+            [disabled]="isRunning()"
+            [class.active]="bufferSize() === 1"
+            class="btn btn-buffer">
+            1
+          </button>
+          <button 
+            (click)="changeBufferSize(3)" 
+            [disabled]="isRunning()"
+            [class.active]="bufferSize() === 3"
+            class="btn btn-buffer">
+            3
+          </button>
+          <button 
+            (click)="changeBufferSize(5)" 
+            [disabled]="isRunning()"
+            [class.active]="bufferSize() === 5"
+            class="btn btn-buffer">
+            5
+          </button>
+          <button 
+            (click)="changeBufferSize(10)" 
+            [disabled]="isRunning()"
+            [class.active]="bufferSize() === 10"
+            class="btn btn-buffer">
+            10
+          </button>
+        </div>
+        <p class="buffer-note">New subscribers will receive the last {{ bufferSize() }} value(s)</p>
+      </div>
+    </div>
+
+    <div class="replay-buffer-display">
+      <h3>Current Replay Buffer</h3>
+      <div class="buffer-values">
+        @if (replayedValues().length === 0) {
+          <div class="empty-buffer">No values in buffer yet</div>
+        } @else {
+          @for (value of replayedValues(); track value) {
+            <div class="buffer-value">{{ value }}</div>
+          }
+        }
+      </div>
+      <p class="buffer-info">These values will be replayed to new subscribers</p>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <h3>ReplaySubject Controls</h3>
+        <button (click)="startExample()" [disabled]="isRunning()" class="btn btn-primary">
+          Start ReplaySubject
+        </button>
+        <button (click)="emitValue()" [disabled]="!isRunning()" class="btn btn-success">
+          Emit Value
+        </button>
+        <button (click)="emitError()" [disabled]="!isRunning()" class="btn btn-danger">
+          Emit Error
+        </button>
+        <button (click)="complete()" [disabled]="!isRunning()" class="btn btn-warning">
+          Complete
+        </button>
+        <button (click)="resetExample()" class="btn btn-secondary">
+          Reset
+        </button>
+      </div>
+
+      <div class="control-group">
+        <h3>Subscriber Controls</h3>
+        <button 
+          (click)="subscribe1()" 
+          [disabled]="!isRunning() || subscriber1Active()" 
+          class="btn btn-subscriber-1">
+          Subscribe 1
+        </button>
+        <button 
+          (click)="subscribe2()" 
+          [disabled]="!isRunning() || subscriber2Active()" 
+          class="btn btn-subscriber-2">
+          Subscribe 2
+        </button>
+        <button 
+          (click)="subscribe3()" 
+          [disabled]="!isRunning() || subscriber3Active()" 
+          class="btn btn-subscriber-3">
+          Subscribe 3
+        </button>
+      </div>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-label">ReplaySubject Status:</span>
+        <span class="status-value" [class.active]="isRunning()">
+          {{ isRunning() ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Active Subscribers:</span>
+        <span class="status-value">
+          {{ (subscriber1Active() ? 1 : 0) + (subscriber2Active() ? 1 : 0) + (subscriber3Active() ? 1 : 0) }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Buffer Size:</span>
+        <span class="status-value">{{ bufferSize() }}</span>
+      </div>
+    </div>
+
+    <div class="message-log">
+      <h3>Message Log</h3>
+      <div class="log-container">
+        @if (messages().length === 0) {
+          <div class="empty-state">
+            Click "Start ReplaySubject" and emit some values. Then add subscribers to see them receive replayed values!
+          </div>
+        }
+        @for (message of messages(); track message.id) {
+          <div class="log-entry" [ngClass]="getSubscriberClass(message.subscriberId)">
+            <span class="log-time">{{ message.timestamp.toLocaleTimeString() }}</span>
+            <span class="log-subscriber">{{ message.subscriberId }}:</span>
+            <span class="log-value">{{ message.value }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples -->
+  <div class="code-section">
+    <h2>Code Example - Basic Usage</h2>
+    <pre><code>{{ codeExample }}</code></pre>
+  </div>
+
+  <div class="code-section">
+    <h2>Code Example - With Time Window</h2>
+    <pre><code>{{ codeExampleWithTime }}</code></pre>
+  </div>
+
+  <!-- Key Characteristics -->
+  <div class="info-section">
+    <h2>Key Characteristics</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>📼 Value Recording</h3>
+        <p>Records and stores a specified number of values from the Observable execution.</p>
+      </div>
+      <div class="info-card">
+        <h3>⏮️ Replay on Subscribe</h3>
+        <p>New subscribers immediately receive all recorded values before receiving new ones.</p>
+      </div>
+      <div class="info-card">
+        <h3>🕐 Time Window</h3>
+        <p>Optionally specify a time window - only values within the window are replayed.</p>
+      </div>
+      <div class="info-card">
+        <h3>💾 Buffer Management</h3>
+        <p>Automatically manages buffer size, removing old values as new ones arrive.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h2>Common Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h3>Activity Log</h3>
+        <p>Keep and replay recent activity history for new components</p>
+        <pre><code>{{ useCaseActivityLog }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Notifications</h3>
+        <p>Show recent notifications to users who just logged in</p>
+        <pre><code>{{ useCaseNotifications }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Chat History</h3>
+        <p>Display recent chat messages when joining a conversation</p>
+        <pre><code>{{ useCaseChatHistory }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison-section">
+    <h2>Subject Comparison</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Subject</th>
+          <th>BehaviorSubject</th>
+          <th>ReplaySubject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Initial Value</td>
+          <td>No</td>
+          <td>Required</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Replay Count</td>
+          <td>0</td>
+          <td>1 (current)</td>
+          <td>Configurable</td>
+        </tr>
+        <tr>
+          <td>Late Subscribers</td>
+          <td>Only new values</td>
+          <td>Current value</td>
+          <td>Last N values</td>
+        </tr>
+        <tr>
+          <td>Memory Usage</td>
+          <td>Low</td>
+          <td>Low</td>
+          <td>Higher (stores buffer)</td>
+        </tr>
+        <tr>
+          <td>Time Window</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Optional</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="info-section">
+    <h2>Best Practices</h2>
+    <div class="best-practices-grid">
+      <div class="practice-card">
+        <h3>✅ Do</h3>
+        <ul>
+          <li>Use for caching recent values or events</li>
+          <li>Set appropriate buffer size to avoid memory issues</li>
+          <li>Consider time window for time-sensitive data</li>
+          <li>Use for activity logs and history features</li>
+          <li>Complete the subject when done to free memory</li>
+        </ul>
+      </div>
+      <div class="practice-card warning">
+        <h3>❌ Don't</h3>
+        <ul>
+          <li>Use large buffer sizes without consideration</li>
+          <li>Use for infinite streams without time window</li>
+          <li>Forget about memory implications</li>
+          <li>Use when only current value is needed (use BehaviorSubject)</li>
+          <li>Expose the ReplaySubject directly (use Observable)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Operators -->
+  <div class="related-section">
+    <h2>Related Subjects</h2>
+    <div class="related-grid">
+      <a routerLink="/subjects/subject" class="related-card">
+        <h3>Subject</h3>
+        <p>Basic Subject without replay functionality</p>
+      </a>
+      <a routerLink="/subjects/behaviorsubject" class="related-card">
+        <h3>BehaviorSubject</h3>
+        <p>Subject with initial value and current value replay</p>
+      </a>
+      <a routerLink="/subjects/asyncsubject" class="related-card">
+        <h3>AsyncSubject</h3>
+        <p>Subject that only emits the last value on completion</p>
+      </a>
+    </div>
+  </div>
+</div>
