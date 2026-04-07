@@ -1,0 +1,210 @@
+<div class="operator-example">
+  <div class="operator-header">
+    <h1>Subject</h1>
+    <div class="badge-container">
+      <span class="badge badge-subjects">Subjects</span>
+      <span class="badge badge-intermediate">Intermediate</span>
+    </div>
+  </div>
+
+  <div class="operator-description">
+    <p>
+      A <strong>Subject</strong> is a special type of Observable that allows values to be
+      multicasted to many Observers. Subjects are like EventEmitters: they maintain a registry
+      of many listeners.
+    </p>
+    <ul>
+      <li>Acts as both an Observable and an Observer</li>
+      <li>Can multicast values to multiple subscribers</li>
+      <li>New subscribers only receive values emitted after subscription</li>
+      <li>Does not have an initial value or replay behavior</li>
+    </ul>
+  </div>
+
+  <!-- Interactive Demo -->
+  <div class="demo-section">
+    <h2>Interactive Demo</h2>
+    
+    <div class="controls">
+      <div class="control-group">
+        <h3>Subject Controls</h3>
+        <button (click)="startExample()" [disabled]="isRunning()" class="btn btn-primary">
+          Start Subject
+        </button>
+        <button (click)="emitValue()" [disabled]="!isRunning()" class="btn btn-success">
+          Emit Value
+        </button>
+        <button (click)="emitError()" [disabled]="!isRunning()" class="btn btn-danger">
+          Emit Error
+        </button>
+        <button (click)="complete()" [disabled]="!isRunning()" class="btn btn-warning">
+          Complete
+        </button>
+        <button (click)="resetExample()" class="btn btn-secondary">
+          Reset
+        </button>
+      </div>
+
+      <div class="control-group">
+        <h3>Subscriber Controls</h3>
+        <button 
+          (click)="subscribe1()" 
+          [disabled]="!isRunning() || subscriber1Active()" 
+          class="btn btn-subscriber-1">
+          Subscribe 1
+        </button>
+        <button 
+          (click)="subscribe2()" 
+          [disabled]="!isRunning() || subscriber2Active()" 
+          class="btn btn-subscriber-2">
+          Subscribe 2
+        </button>
+        <button 
+          (click)="subscribe3()" 
+          [disabled]="!isRunning() || subscriber3Active()" 
+          class="btn btn-subscriber-3">
+          Subscribe 3
+        </button>
+      </div>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-label">Subject Status:</span>
+        <span class="status-value" [class.active]="isRunning()">
+          {{ isRunning() ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Active Subscribers:</span>
+        <span class="status-value">
+          {{ (subscriber1Active() ? 1 : 0) + (subscriber2Active() ? 1 : 0) + (subscriber3Active() ? 1 : 0) }}
+        </span>
+      </div>
+    </div>
+
+    <div class="message-log">
+      <h3>Message Log</h3>
+      <div class="log-container">
+        @if (messages().length === 0) {
+          <div class="empty-state">
+            Click "Start Subject" to begin, then add subscribers and emit values
+          </div>
+        }
+        @for (message of messages(); track message.id) {
+          <div class="log-entry" [ngClass]="getSubscriberClass(message.subscriberId)">
+            <span class="log-time">{{ message.timestamp.toLocaleTimeString() }}</span>
+            <span class="log-subscriber">{{ message.subscriberId }}:</span>
+            <span class="log-value">{{ message.value }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <div class="code-section">
+    <h2>Code Example</h2>
+    <pre><code>{{ codeExample }}</code></pre>
+  </div>
+
+  <!-- Key Characteristics -->
+  <div class="info-section">
+    <h2>Key Characteristics</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🎯 Multicasting</h3>
+        <p>A Subject can have multiple subscribers, and all of them receive the same values.</p>
+      </div>
+      <div class="info-card">
+        <h3>📡 Hot Observable</h3>
+        <p>Subjects are "hot" - they emit values regardless of whether there are subscribers.</p>
+      </div>
+      <div class="info-card">
+        <h3>⏰ No Replay</h3>
+        <p>New subscribers only receive values emitted after their subscription.</p>
+      </div>
+      <div class="info-card">
+        <h3>🔄 Bidirectional</h3>
+        <p>Can act as both an Observable (subscribe) and an Observer (next, error, complete).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h2>Common Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h3>Event Bus</h3>
+        <p>Create a simple event bus for component communication</p>
+        <pre><code>{{ useCaseEventBus }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>State Management</h3>
+        <p>Share state changes across multiple components</p>
+        <pre><code>{{ useCaseStateManagement }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>WebSocket Messages</h3>
+        <p>Broadcast WebSocket messages to multiple subscribers</p>
+        <pre><code>{{ useCaseWebSocket }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison-section">
+    <h2>Subject vs Observable</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Observable</th>
+          <th>Subject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Unicast/Multicast</td>
+          <td>Unicast (each subscriber gets independent execution)</td>
+          <td>Multicast (all subscribers share same execution)</td>
+        </tr>
+        <tr>
+          <td>Hot/Cold</td>
+          <td>Cold (starts emitting on subscription)</td>
+          <td>Hot (emits regardless of subscribers)</td>
+        </tr>
+        <tr>
+          <td>Can emit values</td>
+          <td>No (only through operators)</td>
+          <td>Yes (via next(), error(), complete())</td>
+        </tr>
+        <tr>
+          <td>Late subscribers</td>
+          <td>Get all values from start</td>
+          <td>Only get values after subscription</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Related Operators -->
+  <div class="related-section">
+    <h2>Related Subjects</h2>
+    <div class="related-grid">
+      <a routerLink="/subjects/behaviorsubject" class="related-card">
+        <h3>BehaviorSubject</h3>
+        <p>Subject with initial value and replay of current value</p>
+      </a>
+      <a routerLink="/subjects/replaysubject" class="related-card">
+        <h3>ReplaySubject</h3>
+        <p>Subject that replays specified number of values to new subscribers</p>
+      </a>
+      <a routerLink="/subjects/asyncsubject" class="related-card">
+        <h3>AsyncSubject</h3>
+        <p>Subject that only emits the last value on completion</p>
+      </a>
+    </div>
+  </div>
+</div>

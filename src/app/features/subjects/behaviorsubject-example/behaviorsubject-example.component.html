@@ -1,0 +1,249 @@
+<div class="operator-example">
+  <div class="operator-header">
+    <h1>BehaviorSubject</h1>
+    <div class="badge-container">
+      <span class="badge badge-subjects">Subjects</span>
+      <span class="badge badge-intermediate">Intermediate</span>
+    </div>
+  </div>
+
+  <div class="operator-description">
+    <p>
+      A <strong>BehaviorSubject</strong> is a variant of Subject that requires an initial value and
+      emits its current value to new subscribers. It always stores the latest value and provides
+      synchronous access to it via the <code>.value</code> property.
+    </p>
+    <ul>
+      <li>Requires an initial value upon creation</li>
+      <li>New subscribers immediately receive the current value</li>
+      <li>Stores and provides synchronous access to the latest value</li>
+      <li>Perfect for representing state that always has a value</li>
+    </ul>
+  </div>
+
+  <!-- Interactive Demo -->
+  <div class="demo-section">
+    <h2>Interactive Demo</h2>
+    
+    <div class="current-value-display">
+      <h3>Current Value</h3>
+      <div class="value-box">{{ currentValue() }}</div>
+      <p class="value-note">New subscribers will immediately receive this value</p>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <h3>BehaviorSubject Controls</h3>
+        <button (click)="startExample()" [disabled]="isRunning()" class="btn btn-primary">
+          Start BehaviorSubject
+        </button>
+        <button (click)="emitValue()" [disabled]="!isRunning()" class="btn btn-success">
+          Emit Value
+        </button>
+        <button (click)="getCurrentValue()" [disabled]="!isRunning()" class="btn btn-info">
+          Get Current Value
+        </button>
+        <button (click)="emitError()" [disabled]="!isRunning()" class="btn btn-danger">
+          Emit Error
+        </button>
+        <button (click)="complete()" [disabled]="!isRunning()" class="btn btn-warning">
+          Complete
+        </button>
+        <button (click)="resetExample()" class="btn btn-secondary">
+          Reset
+        </button>
+      </div>
+
+      <div class="control-group">
+        <h3>Subscriber Controls</h3>
+        <button 
+          (click)="subscribe1()" 
+          [disabled]="!isRunning() || subscriber1Active()" 
+          class="btn btn-subscriber-1">
+          Subscribe 1
+        </button>
+        <button 
+          (click)="subscribe2()" 
+          [disabled]="!isRunning() || subscriber2Active()" 
+          class="btn btn-subscriber-2">
+          Subscribe 2
+        </button>
+        <button 
+          (click)="subscribe3()" 
+          [disabled]="!isRunning() || subscriber3Active()" 
+          class="btn btn-subscriber-3">
+          Subscribe 3
+        </button>
+      </div>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-label">BehaviorSubject Status:</span>
+        <span class="status-value" [class.active]="isRunning()">
+          {{ isRunning() ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Active Subscribers:</span>
+        <span class="status-value">
+          {{ (subscriber1Active() ? 1 : 0) + (subscriber2Active() ? 1 : 0) + (subscriber3Active() ? 1 : 0) }}
+        </span>
+      </div>
+    </div>
+
+    <div class="message-log">
+      <h3>Message Log</h3>
+      <div class="log-container">
+        @if (messages().length === 0) {
+          <div class="empty-state">
+            Click "Start BehaviorSubject" to begin. Notice how new subscribers immediately receive the current value!
+          </div>
+        }
+        @for (message of messages(); track message.id) {
+          <div class="log-entry" [ngClass]="getSubscriberClass(message.subscriberId)">
+            <span class="log-time">{{ message.timestamp.toLocaleTimeString() }}</span>
+            <span class="log-subscriber">{{ message.subscriberId }}:</span>
+            <span class="log-value">{{ message.value }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <div class="code-section">
+    <h2>Code Example</h2>
+    <pre><code>{{ codeExample }}</code></pre>
+  </div>
+
+  <!-- Key Characteristics -->
+  <div class="info-section">
+    <h2>Key Characteristics</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🎯 Initial Value</h3>
+        <p>Must be created with an initial value that is immediately available to subscribers.</p>
+      </div>
+      <div class="info-card">
+        <h3>📡 Current Value</h3>
+        <p>New subscribers immediately receive the most recent value upon subscription.</p>
+      </div>
+      <div class="info-card">
+        <h3>🔍 Synchronous Access</h3>
+        <p>The current value can be accessed synchronously via the <code>.value</code> property.</p>
+      </div>
+      <div class="info-card">
+        <h3>💾 State Storage</h3>
+        <p>Always maintains the latest emitted value, making it ideal for state management.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h2>Common Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h3>Current User State</h3>
+        <p>Track and share the currently logged-in user across the application</p>
+        <pre><code>{{ useCaseCurrentUser }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Loading State</h3>
+        <p>Manage and share loading state across components</p>
+        <pre><code>{{ useCaseLoadingState }}</code></pre>
+      </div>
+      <div class="use-case-card">
+        <h3>Form State</h3>
+        <p>Share form data and state between components</p>
+        <pre><code>{{ useCaseFormState }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison-section">
+    <h2>BehaviorSubject vs Subject</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Subject</th>
+          <th>BehaviorSubject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Initial Value</td>
+          <td>Not required</td>
+          <td>Required</td>
+        </tr>
+        <tr>
+          <td>Late Subscribers</td>
+          <td>Only receive new values</td>
+          <td>Immediately receive current value</td>
+        </tr>
+        <tr>
+          <td>Synchronous Access</td>
+          <td>No</td>
+          <td>Yes (via .value property)</td>
+        </tr>
+        <tr>
+          <td>Use Case</td>
+          <td>Event streams</td>
+          <td>State management</td>
+        </tr>
+        <tr>
+          <td>Value Storage</td>
+          <td>No</td>
+          <td>Always stores latest value</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="info-section">
+    <h2>Best Practices</h2>
+    <div class="best-practices-grid">
+      <div class="practice-card">
+        <h3>✅ Do</h3>
+        <ul>
+          <li>Use for state that always has a value</li>
+          <li>Use for current user, settings, or configuration</li>
+          <li>Expose as Observable with <code>asObservable()</code></li>
+          <li>Use for caching the latest value</li>
+        </ul>
+      </div>
+      <div class="practice-card warning">
+        <h3>❌ Don't</h3>
+        <ul>
+          <li>Use for event streams without meaningful initial value</li>
+          <li>Expose the BehaviorSubject directly (use Observable)</li>
+          <li>Use when you don't need the current value feature</li>
+          <li>Forget to complete when done</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Operators -->
+  <div class="related-section">
+    <h2>Related Subjects</h2>
+    <div class="related-grid">
+      <a routerLink="/subjects/subject" class="related-card">
+        <h3>Subject</h3>
+        <p>Basic Subject without initial value or replay</p>
+      </a>
+      <a routerLink="/subjects/replaysubject" class="related-card">
+        <h3>ReplaySubject</h3>
+        <p>Subject that replays specified number of values</p>
+      </a>
+      <a routerLink="/subjects/asyncsubject" class="related-card">
+        <h3>AsyncSubject</h3>
+        <p>Subject that only emits the last value on completion</p>
+      </a>
+    </div>
+  </div>
+</div>

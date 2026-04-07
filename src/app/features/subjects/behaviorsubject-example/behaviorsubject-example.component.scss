@@ -1,0 +1,116 @@
+@use '../subject-example/subject-example.component.scss';
+
+.current-value-display {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+  h3 {
+    margin: 0 0 1rem 0;
+    color: white;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .value-box {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.75rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .value-note {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+  color: white;
+}
+
+.best-practices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.practice-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #48bb78;
+
+  &.warning {
+    border-left-color: #f56565;
+  }
+
+  h3 {
+    margin: 0 0 1rem 0;
+    color: #2d3748;
+    font-size: 1.1rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: #4a5568;
+    line-height: 1.8;
+
+    li {
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  code {
+    background: #f7fafc;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: #667eea;
+  }
+}
+
+@media (max-width: 768px) {
+  .current-value-display {
+    padding: 1.5rem;
+
+    .value-box {
+      font-size: 1.25rem;
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  .best-practices-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Made with Bob
